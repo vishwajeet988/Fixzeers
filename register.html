@@ -1,10 +1,202 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Register | Fixzeers</title><link rel="stylesheet" href="styles.css"></head><body>
-<nav class="nav"><div class="container nav-inner"><a class="logo" href="index.html">Fix<span>zeers</span></a>
-<div class="nav-links"><a href="search.html">Find a Pro</a><a href="how-it-works.html">How it works</a><a href="about.html">About</a><a href="help.html">Help</a></div>
-<div class="nav-actions"><a class="btn btn-light" href="login.html">Login</a><a class="btn btn-primary" href="register.html">Register</a></div><button class="menu" aria-label="Menu">☰</button></div></nav>
-<main class="page"><div class="container"><div class="form-card"><span class="kicker">Customer account</span><h1 style="font-size:38px">Create your account</h1><form onsubmit="event.preventDefault();toast('Registration submitted — OTP verification will be connected in the backend.')"><div class="split"><div><label>Full name</label><input required placeholder="Your name"></div><div><label>Phone</label><input required placeholder="+91..."></div></div><label>Email</label><input type="email" placeholder="you@example.com"><label>Password</label><input required type="password" placeholder="Create a password"><label>City</label><input placeholder="Bhopal"><button class="btn btn-primary">Create account</button></form><p style="text-align:center">Already registered? <a href="login.html"><strong>Login</strong></a></p><div class="notice">Government ID is not required for this initial customer registration.</div></div></div></main><div class="toast"></div><footer class="footer"><div class="container footer-grid">
-<div><a class="logo" href="index.html">Fix<span>zeers</span></a><p style="color:#bcb4ac">Trust who you hire. A reputation-first platform for local service professionals.</p></div>
-<div><h4>For Customers</h4><a href="search.html">Find a Professional</a><a href="how-it-works.html">How It Works</a><a href="help.html">Help Center</a><a href="contact.html">Contact Us</a></div>
-<div><h4>For Professionals</h4><a href="worker-register.html">Become a Fixzeer</a><a href="worker-login.html">Professional Login</a><a href="worker-dashboard.html">Dashboard</a><a href="professional-trust.html">Trust & Reputation</a></div>
-<div><h4>Company & Legal</h4><a href="about.html">About Us</a><a href="careers.html">Careers</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms & Conditions</a><a href="refunds.html">Cancellation & Refunds</a><a href="community-guidelines.html">Community Guidelines</a></div>
-</div><div class="container footer-bottom"><span>© 2026 Fixzeers. All rights reserved.</span><span>Made for local businesses & customers in India.</span></div></footer><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Create Account | Fixzeers</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="index.html">Fix<span>zeers</span></a>
+    <div class="nav-links">
+      <a href="search.html">Find a Pro</a>
+      <a href="how-it-works.html">How it works</a>
+      <a href="about.html">About</a>
+      <a href="help.html">Help</a>
+    </div>
+    <div class="nav-actions">
+      <a class="btn btn-light" href="login.html">Login</a>
+      <a class="btn btn-primary" href="register.html">Register</a>
+    </div>
+    <button class="menu" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<main class="page">
+  <div class="container">
+    <div class="form-card">
+      <span class="kicker">Customer account</span>
+      <h1 style="font-size:38px">Create your account</h1>
+      <p class="muted">Create an account to request services and manage your bookings.</p>
+
+      <div id="message" class="notice" style="display:none"></div>
+
+      <form id="registerForm">
+        <div class="split">
+          <div>
+            <label for="name">Full name</label>
+            <input id="name" name="name" required autocomplete="name" placeholder="Your name">
+          </div>
+          <div>
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" required autocomplete="tel" placeholder="+91...">
+          </div>
+        </div>
+
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required minlength="6"
+               autocomplete="new-password" placeholder="Create a password">
+
+        <label for="city">City</label>
+        <input id="city" name="city" placeholder="Bhopal">
+
+        <button id="submitBtn" class="btn btn-primary" type="submit">
+          Create account
+        </button>
+      </form>
+
+      <p style="text-align:center">
+        Already registered? <a href="login.html"><strong>Login</strong></a>
+      </p>
+
+      <div class="notice">
+        Government ID is not required for this initial customer registration.
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="toast"></div>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <a class="logo" href="index.html">Fix<span>zeers</span></a>
+      <p style="color:#bcb4ac">Trust who you hire. A reputation-first platform for local service professionals.</p>
+    </div>
+    <div>
+      <h4>For Customers</h4>
+      <a href="search.html">Find a Professional</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="help.html">Help Center</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+    <div>
+      <h4>For Professionals</h4>
+      <a href="worker-register.html">Become a Fixzeer</a>
+      <a href="worker-login.html">Professional Login</a>
+      <a href="worker-dashboard.html">Dashboard</a>
+      <a href="professional-trust.html">Trust & Reputation</a>
+    </div>
+    <div>
+      <h4>Company & Legal</h4>
+      <a href="about.html">About Us</a>
+      <a href="careers.html">Careers</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms & Conditions</a>
+      <a href="refunds.html">Cancellation & Refunds</a>
+      <a href="community-guidelines.html">Community Guidelines</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Fixzeers. All rights reserved.</span>
+    <span>Made for local businesses & customers in India.</span>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+(() => {
+  const API = "http://localhost:4000/api";
+  const form = document.querySelector("#registerForm");
+  const button = document.querySelector("#submitBtn");
+  const message = document.querySelector("#message");
+
+  function showMessage(text, type) {
+    message.textContent = text;
+    message.style.display = "block";
+    message.style.borderColor = type === "error" ? "#f0b4a0" : "#c9dfcf";
+    message.style.background = type === "error" ? "#fff3ef" : "#f1faf3";
+  }
+
+  function saveSession(data) {
+    const token = data?.token || data?.accessToken || data?.jwt;
+    const user = data?.user;
+
+    if (token) localStorage.setItem("fixzeers_token", token);
+    if (user) localStorage.setItem("fixzeers_user", JSON.stringify(user));
+
+    return token;
+  }
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const name = document.querySelector("#name").value.trim();
+    const phone = document.querySelector("#phone").value.trim();
+    const email = document.querySelector("#email").value.trim();
+    const password = document.querySelector("#password").value;
+    const city = document.querySelector("#city").value.trim();
+
+    button.disabled = true;
+    button.textContent = "Creating account...";
+    message.style.display = "none";
+
+    try {
+      const response = await fetch(`${API}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          phone,
+          email: email || undefined,
+          password,
+          role: "customer",
+          city: city || undefined
+        })
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(
+          data.error ||
+          data.message ||
+          "Registration failed. Please check your details."
+        );
+      }
+
+      const token = saveSession(data);
+
+      if (token) {
+        showMessage("Account created successfully. You are now logged in.", "success");
+        setTimeout(() => {
+          window.location.href = "search.html";
+        }, 700);
+      } else {
+        showMessage("Account created. Please log in to continue.", "success");
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 900);
+      }
+    } catch (error) {
+      console.error(error);
+      showMessage(
+        error.message || "Could not connect to the Fixzeers backend.",
+        "error"
+      );
+    } finally {
+      button.disabled = false;
+      button.textContent = "Create account";
+    }
+  });
+})();
+</script>
+</body>
+</html>

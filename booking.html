@@ -1,10 +1,390 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Request Service | Fixzeers</title><link rel="stylesheet" href="styles.css"></head><body>
-<nav class="nav"><div class="container nav-inner"><a class="logo" href="index.html">Fix<span>zeers</span></a>
-<div class="nav-links"><a href="search.html">Find a Pro</a><a href="how-it-works.html">How it works</a><a href="about.html">About</a><a href="help.html">Help</a></div>
-<div class="nav-actions"><a class="btn btn-light" href="login.html">Login</a><a class="btn btn-primary" href="register.html">Register</a></div><button class="menu" aria-label="Menu">☰</button></div></nav>
-<main class="page"><div class="container"><div class="form-card"><span class="kicker">Service request</span><h1 style="font-size:38px">Request Rajesh</h1><p class="muted">AC Technician • Fixzeer Score 94</p><form onsubmit="event.preventDefault();toast('Service request created in demo mode.');setTimeout(()=>location.href='job.html',700)"><label>What do you need?</label><textarea required rows="4" placeholder="Describe the problem..."></textarea><div class="split"><div><label>Preferred date</label><input type="date" required></div><div><label>Preferred time</label><input type="time" required></div></div><label>Address / area</label><input required placeholder="Your service address"><button class="btn btn-primary">Send service request</button></form></div></div></main><div class="toast"></div><footer class="footer"><div class="container footer-grid">
-<div><a class="logo" href="index.html">Fix<span>zeers</span></a><p style="color:#bcb4ac">Trust who you hire. A reputation-first platform for local service professionals.</p></div>
-<div><h4>For Customers</h4><a href="search.html">Find a Professional</a><a href="how-it-works.html">How It Works</a><a href="help.html">Help Center</a><a href="contact.html">Contact Us</a></div>
-<div><h4>For Professionals</h4><a href="worker-register.html">Become a Fixzeer</a><a href="worker-login.html">Professional Login</a><a href="worker-dashboard.html">Dashboard</a><a href="professional-trust.html">Trust & Reputation</a></div>
-<div><h4>Company & Legal</h4><a href="about.html">About Us</a><a href="careers.html">Careers</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms & Conditions</a><a href="refunds.html">Cancellation & Refunds</a><a href="community-guidelines.html">Community Guidelines</a></div>
-</div><div class="container footer-bottom"><span>© 2026 Fixzeers. All rights reserved.</span><span>Made for local businesses & customers in India.</span></div></footer><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Request Service | Fixzeers</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="index.html">Fix<span>zeers</span></a>
+
+    <div class="nav-links">
+      <a href="search.html">Find a Pro</a>
+      <a href="how-it-works.html">How it works</a>
+      <a href="about.html">About</a>
+      <a href="help.html">Help</a>
+    </div>
+
+    <div class="nav-actions">
+      <a class="btn btn-light" href="login.html">Login</a>
+      <a class="btn btn-primary" href="register.html">Register</a>
+    </div>
+
+    <button class="menu" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<main class="page">
+  <div class="container">
+
+    <div id="bookingLoading" class="card" style="text-align:center;padding:50px">
+      <h3>Loading service request...</h3>
+      <p class="muted">Please wait.</p>
+    </div>
+
+    <div id="bookingError" class="card" style="display:none;text-align:center;padding:50px">
+      <h3>Unable to create service request</h3>
+      <p class="muted" id="bookingErrorMessage"></p>
+      <a class="btn btn-light" href="search.html">Back to professionals</a>
+    </div>
+
+    <div id="bookingContent" class="form-card" style="display:none">
+
+      <span class="kicker">Service request</span>
+
+      <h1 id="bookingTitle" style="font-size:38px">
+        Request Service
+      </h1>
+
+      <p class="muted" id="professionalSummary">
+        Loading professional...
+      </p>
+
+      <form id="bookingForm">
+
+        <label for="description">What do you need?</label>
+
+        <textarea
+          id="description"
+          name="description"
+          required
+          rows="4"
+          maxlength="2000"
+          placeholder="Describe the problem or service you need..."
+        ></textarea>
+
+
+        <div class="split">
+
+          <div>
+            <label for="preferredDate">Preferred date</label>
+
+            <input
+              id="preferredDate"
+              name="preferredDate"
+              type="date"
+              required
+            >
+          </div>
+
+          <div>
+            <label for="preferredTime">Preferred time</label>
+
+            <input
+              id="preferredTime"
+              name="preferredTime"
+              type="time"
+              required
+            >
+          </div>
+
+        </div>
+
+
+        <label for="address">Address / area</label>
+
+        <input
+          id="address"
+          name="address"
+          required
+          maxlength="500"
+          placeholder="Enter your service address"
+        >
+
+
+        <button
+          id="submitBooking"
+          type="submit"
+          class="btn btn-primary"
+        >
+          Send service request
+        </button>
+
+        <p
+          id="bookingStatus"
+          class="muted"
+          style="display:none;margin-top:15px"
+        ></p>
+
+      </form>
+
+    </div>
+
+  </div>
+</main>
+
+<div class="toast"></div>
+
+<footer class="footer">
+  <div class="container footer-grid">
+
+    <div>
+      <a class="logo" href="index.html">Fix<span>zeers</span></a>
+      <p style="color:#bcb4ac">
+        Trust who you hire. A reputation-first platform for local service professionals.
+      </p>
+    </div>
+
+    <div>
+      <h4>For Customers</h4>
+      <a href="search.html">Find a Professional</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="help.html">Help Center</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+
+    <div>
+      <h4>For Professionals</h4>
+      <a href="worker-register.html">Become a Fixzeer</a>
+      <a href="worker-login.html">Professional Login</a>
+      <a href="worker-dashboard.html">Dashboard</a>
+      <a href="professional-trust.html">Trust & Reputation</a>
+    </div>
+
+    <div>
+      <h4>Company & Legal</h4>
+      <a href="about.html">About Us</a>
+      <a href="careers.html">Careers</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms & Conditions</a>
+      <a href="refunds.html">Cancellation & Refunds</a>
+      <a href="community-guidelines.html">Community Guidelines</a>
+    </div>
+
+  </div>
+
+  <div class="container footer-bottom">
+    <span>© 2026 Fixzeers. All rights reserved.</span>
+    <span>Made for local businesses & customers in India.</span>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+
+<script>
+const FIXZEERS_API_BASE = "http://localhost:4000/api";
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+  const loading = document.querySelector("#bookingLoading");
+  const errorBox = document.querySelector("#bookingError");
+  const errorMessage = document.querySelector("#bookingErrorMessage");
+  const content = document.querySelector("#bookingContent");
+  const form = document.querySelector("#bookingForm");
+
+  const title = document.querySelector("#bookingTitle");
+  const summary = document.querySelector("#professionalSummary");
+
+  const dateInput = document.querySelector("#preferredDate");
+  const timeInput = document.querySelector("#preferredTime");
+  const status = document.querySelector("#bookingStatus");
+  const submitButton = document.querySelector("#submitBooking");
+
+  const params = new URLSearchParams(window.location.search);
+  const professionalId = params.get("professionalId");
+
+  if (!professionalId) {
+    loading.style.display = "none";
+    errorBox.style.display = "block";
+    errorMessage.textContent =
+      "No professional was selected. Please return to the search page.";
+    return;
+  }
+
+  // Prevent selecting a date in the past.
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  dateInput.min = `${year}-${month}-${day}`;
+
+  try {
+
+    const token = localStorage.getItem("fixzeers_token");
+
+    // The jobs endpoint requires an authenticated customer.
+    if (!token) {
+      loading.style.display = "none";
+      errorBox.style.display = "block";
+      errorMessage.innerHTML =
+        'Please <a href="login.html">log in</a> as a customer before requesting a service.';
+      return;
+    }
+
+    const profileResponse = await fetch(
+      `${FIXZEERS_API_BASE}/professionals/${encodeURIComponent(professionalId)}`
+    );
+
+    const profileData =
+      await profileResponse.json().catch(() => ({}));
+
+    if (!profileResponse.ok || !profileData.professional) {
+      throw new Error(
+        profileData.error || "Professional not found."
+      );
+    }
+
+    const professional = profileData.professional;
+
+    const professionalName =
+      professional.name || "Professional";
+
+    const category =
+      professional.category || "Service Professional";
+
+    const score =
+      Number(professional.score || 0);
+
+    title.textContent =
+      `Request ${professionalName}`;
+
+    summary.textContent =
+      `${category} • Fixzeer Score ${score} • ${professional.service_area || "Service area not specified"}`;
+
+    loading.style.display = "none";
+    content.style.display = "block";
+
+
+    form.addEventListener("submit", async event => {
+
+      event.preventDefault();
+
+      const description =
+        document.querySelector("#description").value.trim();
+
+      const address =
+        document.querySelector("#address").value.trim();
+
+      const date =
+        dateInput.value;
+
+      const time =
+        timeInput.value;
+
+      if (!description || !address || !date || !time) {
+        return;
+      }
+
+      /*
+       * Backend expects an ISO datetime for scheduledAt.
+       * We send UTC using Z to avoid browser-local formatting issues.
+       */
+      const localDateTime =
+        new Date(`${date}T${time}:00`);
+
+      if (Number.isNaN(localDateTime.getTime())) {
+        status.textContent =
+          "Please select a valid date and time.";
+        status.style.display = "block";
+        return;
+      }
+
+      const scheduledAt =
+        localDateTime.toISOString();
+
+      submitButton.disabled = true;
+      submitButton.textContent =
+        "Creating request...";
+
+      status.textContent =
+        "Sending your service request...";
+      status.style.display = "block";
+
+      try {
+
+        const response = await fetch(
+          `${FIXZEERS_API_BASE}/jobs`,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
+
+            body: JSON.stringify({
+              professionalId,
+              title: `${category} service request`,
+              description,
+              scheduledAt,
+              address
+            })
+          }
+        );
+
+        const data =
+          await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+            "Could not create service request."
+          );
+        }
+
+        status.textContent =
+          "Service request created successfully.";
+
+        if (data.job && data.job.id) {
+          setTimeout(() => {
+            window.location.href =
+              `job.html?id=${encodeURIComponent(data.job.id)}`;
+          }, 600);
+        } else {
+          setTimeout(() => {
+            window.location.href = "job.html";
+          }, 600);
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Booking creation failed:",
+          error
+        );
+
+        status.textContent =
+          error.message ||
+          "Could not create service request.";
+
+        submitButton.disabled = false;
+        submitButton.textContent =
+          "Send service request";
+      }
+
+    });
+
+  } catch (error) {
+
+    console.error(
+      "Booking page failed:",
+      error
+    );
+
+    loading.style.display = "none";
+    errorBox.style.display = "block";
+    errorMessage.textContent =
+      error.message ||
+      "Unable to load the professional.";
+  }
+
+});
+</script>
+
+</body>
+</html>

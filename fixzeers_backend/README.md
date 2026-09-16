@@ -1,0 +1,24 @@
+# Fixzeers Backend — MVP
+
+Reputation-first local services API for Fixzeers.
+
+## Stack
+Node.js, Express, TypeScript, PostgreSQL, JWT, bcrypt, Zod.
+
+## Setup
+
+1. Install Node.js 20+ and PostgreSQL.
+2. Create a PostgreSQL database named `fixzeers`.
+3. Run `database/schema.sql`.
+4. Copy `.env.example` to `.env` and update credentials.
+5. Run `npm install`.
+6. Run `npm run build`.
+7. Run `npm run dev`.
+
+API: http://localhost:4000
+Health: GET /api/health
+
+## Core flow
+Customer/professional auth → professional discovery → job request → job lifecycle → customer confirmation → review → Fixzeer Score.
+
+Government ID is intentionally not required in this MVP.

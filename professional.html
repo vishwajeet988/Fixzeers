@@ -1,10 +1,401 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rajesh Kumar - Professional Profile | Fixzeers</title><link rel="stylesheet" href="styles.css"></head><body>
-<nav class="nav"><div class="container nav-inner"><a class="logo" href="index.html">Fix<span>zeers</span></a>
-<div class="nav-links"><a href="search.html">Find a Pro</a><a href="how-it-works.html">How it works</a><a href="about.html">About</a><a href="help.html">Help</a></div>
-<div class="nav-actions"><a class="btn btn-light" href="login.html">Login</a><a class="btn btn-primary" href="register.html">Register</a></div><button class="menu" aria-label="Menu">☰</button></div></nav>
-<main class="page"><div class="container"><div class="card"><div class="profile-head"><div class="profile-avatar">RK</div><div class="grow"><span class="tag">✓ Fixzeers Verified</span><h1 style="font-size:40px;margin:7px 0">Rajesh Kumar</h1><p class="muted">AC Technician • 8 years experience • Bhopal</p></div><a class="btn btn-primary" href="booking.html">Request service</a></div><div class="metric-grid" style="margin-top:30px"><div class="metric"><strong>94</strong>Fixzeer Score</div><div class="metric"><strong>4.9 ★</strong>Customer rating</div><div class="metric"><strong>1,248</strong>Verified jobs</div><div class="metric"><strong>8 yrs</strong>Experience</div></div></div><div class="grid grid-3" style="margin-top:20px"><div class="card"><h3>Skills</h3><p>AC servicing • Installation • Gas charging • Troubleshooting • Split & window AC</p></div><div class="card"><h3>Recent work</h3><p class="muted">Verified jobs and customer feedback build this history over time.</p><span class="verify">✓ 1,248 jobs verified</span></div><div class="card"><h3>Reviews</h3><p>“Quick, professional and explained the issue clearly.”</p><small class="muted">Verified customer • 2 weeks ago</small></div></div></div></main><div class="toast"></div><footer class="footer"><div class="container footer-grid">
-<div><a class="logo" href="index.html">Fix<span>zeers</span></a><p style="color:#bcb4ac">Trust who you hire. A reputation-first platform for local service professionals.</p></div>
-<div><h4>For Customers</h4><a href="search.html">Find a Professional</a><a href="how-it-works.html">How It Works</a><a href="help.html">Help Center</a><a href="contact.html">Contact Us</a></div>
-<div><h4>For Professionals</h4><a href="worker-register.html">Become a Fixzeer</a><a href="worker-login.html">Professional Login</a><a href="worker-dashboard.html">Dashboard</a><a href="professional-trust.html">Trust & Reputation</a></div>
-<div><h4>Company & Legal</h4><a href="about.html">About Us</a><a href="careers.html">Careers</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms & Conditions</a><a href="refunds.html">Cancellation & Refunds</a><a href="community-guidelines.html">Community Guidelines</a></div>
-</div><div class="container footer-bottom"><span>© 2026 Fixzeers. All rights reserved.</span><span>Made for local businesses & customers in India.</span></div></footer><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Professional Profile | Fixzeers</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="index.html">Fix<span>zeers</span></a>
+
+    <div class="nav-links">
+      <a href="search.html">Find a Pro</a>
+      <a href="how-it-works.html">How it works</a>
+      <a href="about.html">About</a>
+      <a href="help.html">Help</a>
+    </div>
+
+    <div class="nav-actions">
+      <a class="btn btn-light" href="login.html">Login</a>
+      <a class="btn btn-primary" href="register.html">Register</a>
+    </div>
+
+    <button class="menu" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<main class="page">
+  <div class="container">
+
+    <!-- Loading -->
+    <div id="profileLoading" class="card" style="text-align:center;padding:50px">
+      <h3>Loading professional profile...</h3>
+      <p class="muted">Please wait.</p>
+    </div>
+
+    <!-- Error -->
+    <div id="profileError" class="card" style="display:none;text-align:center;padding:50px">
+      <h3>Professional not found</h3>
+      <p class="muted" id="profileErrorMessage">
+        We couldn't load this professional's profile.
+      </p>
+      <a class="btn btn-primary" href="search.html">Back to professionals</a>
+    </div>
+
+    <!-- Profile -->
+    <div id="profileContent" style="display:none">
+
+      <div class="card">
+        <div class="profile-head">
+
+          <div class="profile-avatar" id="profileAvatar">FP</div>
+
+          <div class="grow">
+            <span class="tag" id="verificationTag">New profile</span>
+
+            <h1 id="profileName" style="font-size:40px;margin:7px 0">
+              Professional
+            </h1>
+
+            <p class="muted" id="profileSubtitle">
+              Service Professional
+            </p>
+          </div>
+
+          <a class="btn btn-primary" id="requestServiceBtn" href="booking.html">
+            Request service
+          </a>
+
+        </div>
+
+        <div class="metric-grid" style="margin-top:30px">
+
+          <div class="metric">
+            <strong id="profileScore">0</strong>
+            Fixzeer Score
+          </div>
+
+          <div class="metric">
+            <strong id="profileRating">New</strong>
+            Customer rating
+          </div>
+
+          <div class="metric">
+            <strong id="profileJobs">0</strong>
+            Verified jobs
+          </div>
+
+          <div class="metric">
+            <strong id="profileExperience">0 yrs</strong>
+            Experience
+          </div>
+
+        </div>
+      </div>
+
+      <div class="grid grid-3" style="margin-top:20px">
+
+        <div class="card">
+          <h3>About</h3>
+          <p id="profileBio" class="muted">
+            No professional description has been added yet.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Skills</h3>
+          <div id="profileSkills">
+            <p class="muted">No skills listed yet.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Service details</h3>
+
+          <p>
+            <strong>Service area</strong><br>
+            <span id="profileArea" class="muted">Not specified</span>
+          </p>
+
+          <p>
+            <strong>Availability</strong><br>
+            <span id="profileAvailability" class="muted">Not specified</span>
+          </p>
+
+          <p>
+            <strong>Completion rate</strong><br>
+            <span id="profileCompletion" class="muted">0%</span>
+          </p>
+        </div>
+
+      </div>
+
+      <div class="grid grid-2" style="margin-top:20px">
+
+        <div class="card">
+          <h3>Recent work</h3>
+
+          <div id="profilePortfolio">
+            <p class="muted">
+              Portfolio and verified work will appear here as the professional
+              builds their history.
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Customer reviews</h3>
+
+          <div id="profileReviews">
+            <p class="muted">No reviews yet.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<div class="toast"></div>
+
+<footer class="footer">
+  <div class="container footer-grid">
+
+    <div>
+      <a class="logo" href="index.html">Fix<span>zeers</span></a>
+      <p style="color:#bcb4ac">
+        Trust who you hire. A reputation-first platform for local service professionals.
+      </p>
+    </div>
+
+    <div>
+      <h4>For Customers</h4>
+      <a href="search.html">Find a Professional</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="help.html">Help Center</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+
+    <div>
+      <h4>For Professionals</h4>
+      <a href="worker-register.html">Become a Fixzeer</a>
+      <a href="worker-login.html">Professional Login</a>
+      <a href="worker-dashboard.html">Dashboard</a>
+      <a href="professional-trust.html">Trust & Reputation</a>
+    </div>
+
+    <div>
+      <h4>Company & Legal</h4>
+      <a href="about.html">About Us</a>
+      <a href="careers.html">Careers</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms & Conditions</a>
+      <a href="refunds.html">Cancellation & Refunds</a>
+      <a href="community-guidelines.html">Community Guidelines</a>
+    </div>
+
+  </div>
+
+  <div class="container footer-bottom">
+    <span>© 2026 Fixzeers. All rights reserved.</span>
+    <span>Made for local businesses & customers in India.</span>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const loading = document.querySelector("#profileLoading");
+  const errorBox = document.querySelector("#profileError");
+  const errorMessage = document.querySelector("#profileErrorMessage");
+  const content = document.querySelector("#profileContent");
+
+  const params = new URLSearchParams(window.location.search);
+  const professionalId = params.get("id");
+
+  if (!professionalId) {
+    loading.style.display = "none";
+    errorBox.style.display = "block";
+    errorMessage.textContent =
+      "No professional was selected. Please return to the search page.";
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `${API_BASE}/professionals/${encodeURIComponent(professionalId)}`
+    );
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok || !data.professional) {
+      throw new Error(
+        data.error || "Professional profile could not be found."
+      );
+    }
+
+    const professional = data.professional;
+    const reviews = data.reviews || [];
+
+    const name = professional.name || "Fixzeer Professional";
+
+    document.title =
+      `${name} - Professional Profile | Fixzeers`;
+
+    document.querySelector("#profileAvatar").textContent =
+      getInitials(name);
+
+    document.querySelector("#profileName").textContent =
+      name;
+
+    const category =
+      professional.category || "Service Professional";
+
+    const experience =
+      Number(professional.years_experience || 0);
+
+    document.querySelector("#profileSubtitle").textContent =
+      `${category} • ${experience} years experience • ${professional.service_area || "Service area not specified"}`;
+
+    const status =
+      professional.verification_status || "new";
+
+    const verificationTag =
+      document.querySelector("#verificationTag");
+
+    const statusLabels = {
+      new: "New profile",
+      verified: "✓ Fixzeers Verified",
+      trusted: "✓ Trusted Fixzeer",
+      top: "✓ Top Fixzeer"
+    };
+
+    verificationTag.textContent =
+      statusLabels[status] || "Profile status";
+
+    document.querySelector("#profileScore").textContent =
+      Number(professional.score || 0);
+
+    const rating =
+      Number(professional.average_rating || 0);
+
+    document.querySelector("#profileRating").textContent =
+      rating ? `${rating.toFixed(1)} ★` : "New";
+
+    document.querySelector("#profileJobs").textContent =
+      Number(professional.verified_jobs || 0).toLocaleString();
+
+    document.querySelector("#profileExperience").textContent =
+      `${experience} yrs`;
+
+    document.querySelector("#profileBio").textContent =
+      professional.bio ||
+      "No professional description has been added yet.";
+
+    document.querySelector("#profileArea").textContent =
+      professional.service_area ||
+      "Not specified";
+
+    document.querySelector("#profileAvailability").textContent =
+      professional.availability ||
+      "Not specified";
+
+    document.querySelector("#profileCompletion").textContent =
+      `${Number(professional.completion_rate || 0).toFixed(0)}%`;
+
+    const skillsContainer =
+      document.querySelector("#profileSkills");
+
+    const skills = Array.isArray(professional.skills)
+      ? professional.skills
+      : [];
+
+    if (skills.length) {
+      skillsContainer.innerHTML = skills
+        .map(skill => `
+          <span class="tag" style="display:inline-block;margin:4px 4px 4px 0">
+            ${escapeHtml(skill)}
+          </span>
+        `)
+        .join("");
+    }
+
+    const portfolioContainer =
+      document.querySelector("#profilePortfolio");
+
+    const portfolio =
+      Array.isArray(professional.portfolio_urls)
+        ? professional.portfolio_urls
+        : [];
+
+    if (portfolio.length) {
+      portfolioContainer.innerHTML = portfolio
+        .map(url => `
+          <p>
+            <a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">
+              View portfolio item
+            </a>
+          </p>
+        `)
+        .join("");
+    }
+
+    const reviewsContainer =
+      document.querySelector("#profileReviews");
+
+    if (reviews.length) {
+      reviewsContainer.innerHTML = reviews
+        .map(review => {
+          const reviewRating =
+            Number(review.rating || 0);
+
+          const date =
+            review.created_at
+              ? new Date(review.created_at).toLocaleDateString()
+              : "";
+
+          return `
+            <div style="padding:14px 0;border-bottom:1px solid #eee">
+              <strong>
+                ${reviewRating ? `${reviewRating}/5 ★` : "Review"}
+              </strong>
+
+              <p style="margin:6px 0">
+                ${escapeHtml(review.comment || "No written comment.")}
+              </p>
+
+              <small class="muted">
+                Verified customer${date ? ` • ${escapeHtml(date)}` : ""}
+              </small>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    document.querySelector("#requestServiceBtn").href =
+      `booking.html?professionalId=${encodeURIComponent(professional.id)}`;
+
+    loading.style.display = "none";
+    content.style.display = "block";
+
+  } catch (error) {
+    console.error("Profile loading failed:", error);
+
+    loading.style.display = "none";
+    errorBox.style.display = "block";
+    errorMessage.textContent =
+      error.message || "Unable to load this professional.";
+  }
+});
+</script>
+
+</body>
+</html>
