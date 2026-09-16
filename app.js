@@ -687,7 +687,40 @@ async function checkLoggedInUser() {
     return null;
   }
 }
+async function updateNavigation() {
+  const navActions = document.getElementById("navActions");
 
+  if (!navActions) return;
+
+  const user = await checkLoggedInUser();
+
+  if (!user) {
+    navActions.innerHTML = `
+      <a class="btn btn-light" href="login.html">Login</a>
+      <a class="btn btn-primary" href="register.html">Register</a>
+    `;
+    return;
+  }
+
+  navActions.innerHTML = `
+    <a class="btn btn-light" href="profile.html">
+      👤 ${escapeHtml(user.name || "Profile")}
+    </a>
+    <button class="btn btn-primary" id="logoutBtn" type="button">
+      Logout
+    </button>
+  `;
+
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("fixzeers_token");
+      localStorage.removeItem("fixzeers_user");
+      window.location.href = "index.html";
+    });
+  }
+}
 
 /* =========================
    TOAST BUTTONS
@@ -704,7 +737,6 @@ function setupToastButtons() {
     });
 }
 
-
 /* =========================
    INITIALIZE
 ========================= */
@@ -718,6 +750,8 @@ document.addEventListener(
     await loadCategories();
     await loadProfessionals();
     await setupSearchPage();
-    await checkLoggedInUser();
+
+    // Update navigation after checking the logged-in customer.
+    await updateNavigation();
   }
 );
