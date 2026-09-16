@@ -17,7 +17,7 @@ const router = Router();
 |   ?q=electrician
 |   ?category=electrician
 |   ?area=Bhopal
-|
+|--------------------------------------------------------------------------
 */
 router.get("/", async (req, res, next) => {
   try {
@@ -56,7 +56,7 @@ router.get("/", async (req, res, next) => {
            OR p.bio ILIKE '%' || $1 || '%'
            OR EXISTS (
              SELECT 1
-             FROM unnest(COALESCE(p.skills, ARRAY[]::text[])) AS skill
+             FROM unnest(p.skills) AS skill
              WHERE skill ILIKE '%' || $1 || '%'
            )
          )
@@ -84,6 +84,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+
 /*
 |--------------------------------------------------------------------------
 | GET /api/professionals/me/reputation
@@ -109,14 +110,12 @@ router.get(
   }
 );
 
+
 /*
 |--------------------------------------------------------------------------
 | PUT /api/professionals/profile/me
 |--------------------------------------------------------------------------
 | Update logged-in professional's profile
-|
-| IMPORTANT:
-| This route MUST be before /:id.
 |--------------------------------------------------------------------------
 */
 const profileSchema = z.object({
@@ -159,6 +158,7 @@ const profileSchema = z.object({
     .max(10)
     .optional()
 });
+
 
 router.put(
   "/profile/me",
@@ -221,6 +221,7 @@ router.put(
     }
   }
 );
+
 
 /*
 |--------------------------------------------------------------------------
@@ -289,5 +290,6 @@ router.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
+
 
 export default router;
