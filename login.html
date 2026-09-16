@@ -11,80 +11,135 @@
 <nav class="nav">
   <div class="container nav-inner">
     <a class="logo" href="index.html">Fix<span>zeers</span></a>
+
     <div class="nav-links">
       <a href="search.html">Find a Pro</a>
       <a href="how-it-works.html">How it works</a>
       <a href="about.html">About</a>
       <a href="help.html">Help</a>
     </div>
+
     <div class="nav-actions">
       <a class="btn btn-light" href="login.html">Login</a>
       <a class="btn btn-primary" href="register.html">Register</a>
     </div>
+
     <button class="menu" aria-label="Menu">☰</button>
   </div>
 </nav>
 
 <main class="page">
   <div class="container">
+
     <div class="form-card">
+
       <span class="kicker">Welcome back</span>
+
       <h1 style="font-size:38px">Login to Fixzeers</h1>
-      <p class="muted">Access your bookings, reviews and account.</p>
+
+      <p class="muted">
+        Access your bookings, reviews and account.
+      </p>
 
       <div id="message" class="notice" style="display:none"></div>
 
       <form id="loginForm">
+
         <label for="identifier">Email or phone</label>
-        <input id="identifier" name="identifier" required autocomplete="username"
-               placeholder="you@example.com or +91...">
+
+        <input
+          id="identifier"
+          name="identifier"
+          required
+          autocomplete="username"
+          placeholder="you@example.com or +91..."
+        >
 
         <label for="password">Password</label>
-        <input id="password" name="password" type="password" required
-               autocomplete="current-password" placeholder="••••••••">
+
+        <input
+          id="password"
+          name="password"
+          type="password"
+          required
+          autocomplete="current-password"
+          placeholder="••••••••"
+        >
 
         <div style="text-align:right;margin-top:8px">
-          <a href="forgot-password.html" class="muted">Forgot password?</a>
+          <a href="forgot-password.html" class="muted">
+            Forgot password?
+          </a>
         </div>
 
-        <button id="submitBtn" class="btn btn-primary" type="submit">Login</button>
+        <button
+          id="submitBtn"
+          class="btn btn-primary"
+          type="submit"
+        >
+          Login
+        </button>
+
       </form>
 
       <p style="text-align:center">
-        New to Fixzeers? <a href="register.html"><strong>Create an account</strong></a>
+        New to Fixzeers?
+        <a href="register.html">
+          <strong>Create an account</strong>
+        </a>
       </p>
 
       <hr style="border:0;border-top:1px solid var(--line)">
 
-      <a class="btn btn-light" href="worker-login.html">Login as a professional</a>
+      <a
+        class="btn btn-light"
+        href="worker-login.html"
+      >
+        Login as a professional
+      </a>
+
     </div>
+
   </div>
 </main>
 
 <div class="toast"></div>
 
 <footer class="footer">
+
   <div class="container footer-grid">
+
     <div>
-      <a class="logo" href="index.html">Fix<span>zeers</span></a>
-      <p style="color:#bcb4ac">Trust who you hire. A reputation-first platform for local service professionals.</p>
+      <a class="logo" href="index.html">
+        Fix<span>zeers</span>
+      </a>
+
+      <p style="color:#bcb4ac">
+        Trust who you hire. A reputation-first platform for local service professionals.
+      </p>
     </div>
+
     <div>
       <h4>For Customers</h4>
+
       <a href="search.html">Find a Professional</a>
       <a href="how-it-works.html">How It Works</a>
       <a href="help.html">Help Center</a>
       <a href="contact.html">Contact Us</a>
     </div>
+
     <div>
       <h4>For Professionals</h4>
+
       <a href="worker-register.html">Become a Fixzeer</a>
       <a href="worker-login.html">Professional Login</a>
       <a href="worker-dashboard.html">Dashboard</a>
       <a href="professional-trust.html">Trust & Reputation</a>
     </div>
+
     <div>
       <h4>Company & Legal</h4>
+
       <a href="about.html">About Us</a>
       <a href="careers.html">Careers</a>
       <a href="privacy.html">Privacy Policy</a>
@@ -92,42 +147,65 @@
       <a href="refunds.html">Cancellation & Refunds</a>
       <a href="community-guidelines.html">Community Guidelines</a>
     </div>
+
   </div>
+
   <div class="container footer-bottom">
     <span>© 2026 Fixzeers. All rights reserved.</span>
     <span>Made for local businesses & customers in India.</span>
   </div>
+
 </footer>
 
 <script src="app.js"></script>
+
 <script>
 (() => {
+
   const API = "https://fixzeers-api.onrender.com/api";
+
   const form = document.querySelector("#loginForm");
   const button = document.querySelector("#submitBtn");
   const message = document.querySelector("#message");
 
   function showMessage(text, type) {
+
     message.textContent = text;
     message.style.display = "block";
-    message.style.borderColor = type === "error" ? "#f0b4a0" : "#c9dfcf";
-    message.style.background = type === "error" ? "#fff3ef" : "#f1faf3";
+
+    if (type === "error") {
+      message.style.borderColor = "#f0b4a0";
+      message.style.background = "#fff3ef";
+    } else {
+      message.style.borderColor = "#c9dfcf";
+      message.style.background = "#f1faf3";
+    }
   }
 
   form.addEventListener("submit", async (event) => {
+
     event.preventDefault();
 
-    const identifier = document.querySelector("#identifier").value.trim();
-    const password = document.querySelector("#password").value;
+    const identifier =
+      document.querySelector("#identifier").value.trim();
+
+    const password =
+      document.querySelector("#password").value;
 
     button.disabled = true;
     button.textContent = "Logging in...";
+
     message.style.display = "none";
 
     try {
+
       const response = await fetch(`${API}/auth/login`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
         body: JSON.stringify({
           identifier,
           emailOrPhone: identifier,
@@ -135,47 +213,107 @@
         })
       });
 
-      const data = await response.json().catch(() => ({}));
+      const data =
+        await response.json().catch(() => ({}));
 
       if (!response.ok) {
+
         throw new Error(
           data.error ||
           data.message ||
           "Login failed. Please check your email/phone and password."
         );
+
       }
 
-      const token = data?.token || data?.accessToken || data?.jwt;
+      const token =
+        data?.token ||
+        data?.accessToken ||
+        data?.jwt;
 
       if (!token) {
-        throw new Error("Login succeeded but the backend did not return an authentication token.");
+
+        throw new Error(
+          "Login succeeded but the backend did not return an authentication token."
+        );
+
       }
 
-      localStorage.setItem("fixzeers_token", token);
+      localStorage.setItem(
+        "fixzeers_token",
+        token
+      );
 
       if (data.user) {
-        localStorage.setItem("fixzeers_user", JSON.stringify(data.user));
+
+        localStorage.setItem(
+          "fixzeers_user",
+          JSON.stringify(data.user)
+        );
+
       }
 
-      showMessage("Login successful. Redirecting...", "success");
+      showMessage(
+        "Login successful. Redirecting...",
+        "success"
+      );
 
-      const next = new URLSearchParams(window.location.search).get("next");
+      /*
+       * Respect an explicitly requested destination first.
+       * Otherwise redirect based on the user's role.
+       */
+
+      const next =
+        new URLSearchParams(
+          window.location.search
+        ).get("next");
+
+      let destination = next;
+
+      if (!destination) {
+
+        if (data.user?.role === "professional") {
+
+          destination = "worker-dashboard.html";
+
+        } else {
+
+          destination = "search.html";
+
+        }
+
+      }
+
       setTimeout(() => {
-        window.location.href = next || "search.html";
+
+        window.location.href = destination;
+
       }, 500);
 
     } catch (error) {
-      console.error(error);
+
+      console.error(
+        "Fixzeers login error:",
+        error
+      );
+
       showMessage(
-        error.message || "Could not connect to the Fixzeers backend.",
+        error.message ||
+        "Could not connect to the Fixzeers backend.",
         "error"
       );
+
     } finally {
+
       button.disabled = false;
       button.textContent = "Login";
+
     }
+
   });
+
 })();
 </script>
+
 </body>
 </html>
