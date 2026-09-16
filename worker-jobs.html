@@ -1,10 +1,361 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Professional Jobs | Fixzeers</title><link rel="stylesheet" href="styles.css"></head><body>
-<nav class="nav"><div class="container nav-inner"><a class="logo" href="index.html">Fix<span>zeers</span></a>
-<div class="nav-links"><a href="search.html">Find a Pro</a><a href="how-it-works.html">How it works</a><a href="about.html">About</a><a href="help.html">Help</a></div>
-<div class="nav-actions"><a class="btn btn-light" href="login.html">Login</a><a class="btn btn-primary" href="register.html">Register</a></div><button class="menu" aria-label="Menu">☰</button></div></nav>
-<main class="page"><div class="container"><div class="page-title"><span class="kicker">Professional jobs</span><h1>Job requests</h1></div><div class="result-list"><div class="card"><div class="row"><div class="grow"><h3>AC not cooling</h3><p class="muted">Arera Colony • Today • 4 km away</p></div><span class="tag">New</span><a class="btn btn-primary" href="job.html">View</a></div></div><div class="card"><div class="row"><div class="grow"><h3>Split AC service</h3><p class="muted">MP Nagar • Tomorrow • 2 km away</p></div><span class="tag">Scheduled</span><a class="btn btn-light" href="job.html">View</a></div></div></div></div></main><div class="toast"></div><footer class="footer"><div class="container footer-grid">
-<div><a class="logo" href="index.html">Fix<span>zeers</span></a><p style="color:#bcb4ac">Trust who you hire. A reputation-first platform for local service professionals.</p></div>
-<div><h4>For Customers</h4><a href="search.html">Find a Professional</a><a href="how-it-works.html">How It Works</a><a href="help.html">Help Center</a><a href="contact.html">Contact Us</a></div>
-<div><h4>For Professionals</h4><a href="worker-register.html">Become a Fixzeer</a><a href="worker-login.html">Professional Login</a><a href="worker-dashboard.html">Dashboard</a><a href="professional-trust.html">Trust & Reputation</a></div>
-<div><h4>Company & Legal</h4><a href="about.html">About Us</a><a href="careers.html">Careers</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms & Conditions</a><a href="refunds.html">Cancellation & Refunds</a><a href="community-guidelines.html">Community Guidelines</a></div>
-</div><div class="container footer-bottom"><span>© 2026 Fixzeers. All rights reserved.</span><span>Made for local businesses & customers in India.</span></div></footer><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Professional Jobs | Fixzeers</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="index.html">Fix<span>zeers</span></a>
+
+    <div class="nav-links">
+      <a href="search.html">Find a Pro</a>
+      <a href="how-it-works.html">How it works</a>
+      <a href="about.html">About</a>
+      <a href="help.html">Help</a>
+    </div>
+
+    <div class="nav-actions">
+      <a class="btn btn-light" href="worker-dashboard.html">Dashboard</a>
+      <a class="btn btn-primary" href="worker-register.html">Register</a>
+    </div>
+
+    <button class="menu" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<main class="page">
+  <div class="container">
+
+    <div class="page-title">
+      <span class="kicker">Professional jobs</span>
+      <h1>Job requests</h1>
+      <p class="muted">
+        View and manage service requests assigned to you.
+      </p>
+    </div>
+
+    <div id="loadingState" class="card">
+      <p>Loading your jobs...</p>
+    </div>
+
+    <div id="errorState"
+         class="card"
+         style="display:none;border:1px solid #f3c2c2;background:#fff7f7;">
+      <h3>Unable to load jobs</h3>
+      <p id="errorText" class="muted"></p>
+      <button id="retryButton" class="btn btn-primary">
+        Try Again
+      </button>
+    </div>
+
+    <div id="emptyState" class="card" style="display:none;">
+      <h3>No jobs yet</h3>
+      <p class="muted">
+        You don't have any service requests yet. New customer requests
+        will appear here.
+      </p>
+      <a href="worker-dashboard.html" class="btn btn-light">
+        Back to Dashboard
+      </a>
+    </div>
+
+    <div id="jobsList" class="result-list" style="display:none;"></div>
+
+  </div>
+</main>
+
+<div class="toast"></div>
+
+<footer class="footer">
+  <div class="container footer-grid">
+
+    <div>
+      <a class="logo" href="index.html">Fix<span>zeers</span></a>
+      <p style="color:#bcb4ac">
+        Trust who you hire. A reputation-first platform for local service professionals.
+      </p>
+    </div>
+
+    <div>
+      <h4>For Customers</h4>
+      <a href="search.html">Find a Professional</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="help.html">Help Center</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+
+    <div>
+      <h4>For Professionals</h4>
+      <a href="worker-register.html">Become a Fixzeer</a>
+      <a href="worker-login.html">Professional Login</a>
+      <a href="worker-dashboard.html">Dashboard</a>
+      <a href="professional-trust.html">Trust & Reputation</a>
+    </div>
+
+    <div>
+      <h4>Company & Legal</h4>
+      <a href="about.html">About Us</a>
+      <a href="careers.html">Careers</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms & Conditions</a>
+      <a href="refunds.html">Cancellation & Refunds</a>
+      <a href="community-guidelines.html">Community Guidelines</a>
+    </div>
+
+  </div>
+
+  <div class="container footer-bottom">
+    <span>© 2026 Fixzeers. All rights reserved.</span>
+    <span>Made for local businesses & customers in India.</span>
+  </div>
+</footer>
+
+<script>
+  const API = "https://fixzeers-api.onrender.com/api";
+
+  const token = localStorage.getItem("fixzeers_token");
+
+  const loadingState = document.getElementById("loadingState");
+  const errorState = document.getElementById("errorState");
+  const errorText = document.getElementById("errorText");
+  const emptyState = document.getElementById("emptyState");
+  const jobsList = document.getElementById("jobsList");
+  const retryButton = document.getElementById("retryButton");
+
+  function showOnly(element) {
+    loadingState.style.display = "none";
+    errorState.style.display = "none";
+    emptyState.style.display = "none";
+    jobsList.style.display = "none";
+
+    if (element) {
+      element.style.display = "";
+    }
+  }
+
+  function formatDate(dateString) {
+    if (!dateString) return "Schedule not set";
+
+    const date = new Date(dateString);
+
+    if (Number.isNaN(date.getTime())) {
+      return "Schedule not set";
+    }
+
+    return date.toLocaleString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    });
+  }
+
+  function formatStatus(status) {
+    if (!status) return "Unknown";
+
+    return status
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, letter => letter.toUpperCase());
+  }
+
+  function statusClass(status) {
+    switch (status) {
+      case "requested":
+        return "tag";
+
+      case "accepted":
+      case "scheduled":
+        return "tag";
+
+      case "arrived":
+      case "in_progress":
+        return "tag";
+
+      case "completed":
+      case "customer_confirmed":
+        return "tag";
+
+      case "cancelled":
+      case "disputed":
+        return "tag";
+
+      default:
+        return "tag";
+    }
+  }
+
+  function escapeHtml(value) {
+    if (value === null || value === undefined) {
+      return "";
+    }
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function renderJobs(jobs) {
+    if (!Array.isArray(jobs) || jobs.length === 0) {
+      showOnly(emptyState);
+      return;
+    }
+
+    jobsList.innerHTML = "";
+
+    jobs.forEach(job => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const customerName =
+        job.customer_name ||
+        job.customerName ||
+        "Customer";
+
+      const title =
+        job.title ||
+        "Service Request";
+
+      const description =
+        job.description ||
+        "No description provided.";
+
+      const address =
+        job.address ||
+        "Address not provided";
+
+      const status =
+        job.status ||
+        "requested";
+
+      card.innerHTML = `
+        <div class="row" style="align-items:flex-start;gap:18px;">
+
+          <div class="grow">
+
+            <h3>${escapeHtml(title)}</h3>
+
+            <p class="muted">
+              ${escapeHtml(address)}
+            </p>
+
+            <p style="margin-top:8px;">
+              ${escapeHtml(description)}
+            </p>
+
+            <p class="muted" style="margin-top:8px;">
+              Customer:
+              <strong>${escapeHtml(customerName)}</strong>
+            </p>
+
+            <p class="muted">
+              Scheduled:
+              <strong>${escapeHtml(formatDate(job.scheduled_at))}</strong>
+            </p>
+
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-end;">
+
+            <span class="${statusClass(status)}">
+              ${escapeHtml(formatStatus(status))}
+            </span>
+
+            <a
+              class="btn btn-light"
+              href="job.html?id=${encodeURIComponent(job.id)}"
+            >
+              View Job
+            </a>
+
+          </div>
+
+        </div>
+      `;
+
+      jobsList.appendChild(card);
+    });
+
+    loadingState.style.display = "none";
+    errorState.style.display = "none";
+    emptyState.style.display = "none";
+    jobsList.style.display = "grid";
+  }
+
+  async function loadJobs() {
+
+    if (!token) {
+      window.location.href = "worker-login.html";
+      return;
+    }
+
+    showOnly(loadingState);
+
+    try {
+
+      const response = await fetch(`${API}/jobs`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+
+      let data = {};
+
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
+
+      if (response.status === 401) {
+        localStorage.removeItem("fixzeers_token");
+        localStorage.removeItem("fixzeers_user");
+
+        window.location.href = "worker-login.html";
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          data.message ||
+          data.error ||
+          "The server could not load your jobs."
+        );
+      }
+
+      const jobs = Array.isArray(data)
+        ? data
+        : data.jobs;
+
+      renderJobs(jobs || []);
+
+    } catch (error) {
+
+      console.error("Worker jobs error:", error);
+
+      errorText.textContent =
+        error.message ||
+        "Unable to connect to Fixzeers.";
+
+      showOnly(errorState);
+    }
+  }
+
+  retryButton.addEventListener("click", loadJobs);
+
+  loadJobs();
+</script>
+
+</body>
+</html>
