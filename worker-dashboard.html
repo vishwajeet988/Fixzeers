@@ -1,10 +1,1073 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Professional Dashboard | Fixzeers</title><link rel="stylesheet" href="styles.css"></head><body>
-<nav class="nav"><div class="container nav-inner"><a class="logo" href="index.html">Fix<span>zeers</span></a>
-<div class="nav-links"><a href="search.html">Find a Pro</a><a href="how-it-works.html">How it works</a><a href="about.html">About</a><a href="help.html">Help</a></div>
-<div class="nav-actions"><a class="btn btn-light" href="login.html">Login</a><a class="btn btn-primary" href="register.html">Register</a></div><button class="menu" aria-label="Menu">☰</button></div></nav>
-<main class="page"><div class="container"><div class="page-title"><span class="kicker">Professional dashboard</span><h1>Good morning, Rajesh.</h1><p class="lead">Your reputation is your professional asset.</p></div><div class="grid grid-4"><div class="card"><span class="muted">Fixzeer Score</span><h2>94</h2><span class="verify">Excellent trust signal</span></div><div class="card"><span class="muted">Verified jobs</span><h2>1,248</h2></div><div class="card"><span class="muted">Rating</span><h2>4.9 ★</h2></div><div class="card"><span class="muted">This month</span><h2>32</h2><small class="muted">jobs completed</small></div></div><div class="grid grid-3" style="margin-top:20px"><div class="card"><h3>New requests</h3><p>3 customers are looking for AC service in your area.</p><a class="btn btn-primary" href="worker-jobs.html">View jobs</a></div><div class="card"><h3>Your profile</h3><p class="muted">Keep your skills, portfolio and service area up to date.</p><a class="btn btn-light" href="professional.html">View public profile</a></div><div class="card"><h3>Reputation</h3><p class="muted">See what is contributing to your Fixzeer Score.</p><a class="btn btn-light" href="professional-trust.html">View score</a></div></div></div></main><div class="toast"></div><footer class="footer"><div class="container footer-grid">
-<div><a class="logo" href="index.html">Fix<span>zeers</span></a><p style="color:#bcb4ac">Trust who you hire. A reputation-first platform for local service professionals.</p></div>
-<div><h4>For Customers</h4><a href="search.html">Find a Professional</a><a href="how-it-works.html">How It Works</a><a href="help.html">Help Center</a><a href="contact.html">Contact Us</a></div>
-<div><h4>For Professionals</h4><a href="worker-register.html">Become a Fixzeer</a><a href="worker-login.html">Professional Login</a><a href="worker-dashboard.html">Dashboard</a><a href="professional-trust.html">Trust & Reputation</a></div>
-<div><h4>Company & Legal</h4><a href="about.html">About Us</a><a href="careers.html">Careers</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms & Conditions</a><a href="refunds.html">Cancellation & Refunds</a><a href="community-guidelines.html">Community Guidelines</a></div>
-</div><div class="container footer-bottom"><span>© 2026 Fixzeers. All rights reserved.</span><span>Made for local businesses & customers in India.</span></div></footer><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Professional Dashboard | Fixzeers</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+
+    <a class="logo" href="index.html">
+      Fix<span>zeers</span>
+    </a>
+
+    <div class="nav-links">
+      <a href="search.html">Find a Pro</a>
+      <a href="how-it-works.html">How it works</a>
+      <a href="about.html">About</a>
+      <a href="help.html">Help</a>
+    </div>
+
+    <div class="nav-actions" id="navActions">
+      <a class="btn btn-light" href="login.html">Login</a>
+      <a class="btn btn-primary" href="register.html">Register</a>
+    </div>
+
+    <button class="menu" aria-label="Menu">☰</button>
+
+  </div>
+</nav>
+
+
+<main class="page">
+
+  <div class="container">
+
+    <!-- LOADING -->
+    <div id="dashboardLoading" class="card" style="text-align:center;padding:40px">
+      <h3>Loading your dashboard...</h3>
+      <p class="muted">Please wait.</p>
+    </div>
+
+
+    <!-- ERROR -->
+    <div id="dashboardError"
+         class="card"
+         style="display:none;text-align:center;padding:40px">
+
+      <h3>Dashboard unavailable</h3>
+
+      <p id="dashboardErrorMessage" class="muted">
+        Something went wrong while loading your professional dashboard.
+      </p>
+
+      <a class="btn btn-primary" href="login.html">
+        Login again
+      </a>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+    <div id="dashboardContent" style="display:none">
+
+      <div class="page-title">
+
+        <span class="kicker">
+          Professional dashboard
+        </span>
+
+        <h1 id="welcomeTitle">
+          Good morning.
+        </h1>
+
+        <p class="lead">
+          Your reputation is your professional asset.
+        </p>
+
+      </div>
+
+
+      <!-- PROFILE SUMMARY -->
+      <div class="card" style="margin-bottom:20px">
+
+        <div class="worker-top">
+
+          <div class="avatar" id="profileAvatar">
+            --
+          </div>
+
+          <div class="grow">
+
+            <h3 id="profileName">
+              Loading...
+            </h3>
+
+            <div class="muted" id="profileCategory">
+              Service Professional
+            </div>
+
+            <span class="tag" id="verificationStatus">
+              New profile
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- STATS -->
+      <div class="grid grid-4">
+
+        <div class="card">
+
+          <span class="muted">
+            Fixzeer Score
+          </span>
+
+          <h2 id="scoreValue">
+            0
+          </h2>
+
+          <span class="verify" id="scoreMessage">
+            Building your reputation
+          </span>
+
+        </div>
+
+
+        <div class="card">
+
+          <span class="muted">
+            Verified jobs
+          </span>
+
+          <h2 id="jobsValue">
+            0
+          </h2>
+
+        </div>
+
+
+        <div class="card">
+
+          <span class="muted">
+            Rating
+          </span>
+
+          <h2 id="ratingValue">
+            New
+          </h2>
+
+        </div>
+
+
+        <div class="card">
+
+          <span class="muted">
+            This month
+          </span>
+
+          <h2 id="monthJobsValue">
+            0
+          </h2>
+
+          <small class="muted">
+            jobs completed
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- PROFILE INFORMATION -->
+      <div class="grid grid-3" style="margin-top:20px">
+
+        <div class="card">
+
+          <h3>Experience</h3>
+
+          <p class="muted" id="experienceValue">
+            Not specified
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>Service area</h3>
+
+          <p class="muted" id="serviceAreaValue">
+            Not specified
+          </p>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>Completion rate</h3>
+
+          <p class="muted" id="completionValue">
+            0%
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- SKILLS -->
+      <div class="card" style="margin-top:20px">
+
+        <h3>Your skills</h3>
+
+        <div id="skillsContainer">
+
+          <p class="muted">
+            No skills added yet.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- ACTION CARDS -->
+      <div class="grid grid-3" style="margin-top:20px">
+
+
+        <div class="card">
+
+          <h3>New requests</h3>
+
+          <p id="requestsMessage" class="muted">
+            No new service requests.
+          </p>
+
+          <a class="btn btn-primary" href="worker-jobs.html">
+            View jobs
+          </a>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>Your profile</h3>
+
+          <p class="muted">
+            Keep your skills, portfolio and service area up to date.
+          </p>
+
+          <a class="btn btn-light" id="publicProfileLink"
+             href="professional.html">
+            View public profile
+          </a>
+
+        </div>
+
+
+        <div class="card">
+
+          <h3>Reputation</h3>
+
+          <p class="muted">
+            See what is contributing to your Fixzeer Score.
+          </p>
+
+          <a class="btn btn-light" href="professional-trust.html">
+            View score
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <!-- ACCOUNT STATUS -->
+      <div class="card" style="margin-top:20px">
+
+        <h3>Account information</h3>
+
+        <p>
+          <strong>Phone</strong><br>
+          <span id="phoneValue" class="muted">
+            Not available
+          </span>
+        </p>
+
+        <p>
+          <strong>Email</strong><br>
+          <span id="emailValue" class="muted">
+            Not available
+          </span>
+        </p>
+
+        <p>
+          <strong>Member since</strong><br>
+          <span id="memberSinceValue" class="muted">
+            Not available
+          </span>
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<div class="toast"></div>
+
+
+<footer class="footer">
+
+  <div class="container footer-grid">
+
+    <div>
+
+      <a class="logo" href="index.html">
+        Fix<span>zeers</span>
+      </a>
+
+      <p style="color:#bcb4ac">
+        Trust who you hire. A reputation-first platform for local service professionals.
+      </p>
+
+    </div>
+
+
+    <div>
+
+      <h4>For Customers</h4>
+
+      <a href="search.html">Find a Professional</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="help.html">Help Center</a>
+      <a href="contact.html">Contact Us</a>
+
+    </div>
+
+
+    <div>
+
+      <h4>For Professionals</h4>
+
+      <a href="worker-register.html">Become a Fixzeer</a>
+      <a href="worker-login.html">Professional Login</a>
+      <a href="worker-dashboard.html">Dashboard</a>
+      <a href="professional-trust.html">Trust & Reputation</a>
+
+    </div>
+
+
+    <div>
+
+      <h4>Company & Legal</h4>
+
+      <a href="about.html">About Us</a>
+      <a href="careers.html">Careers</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms & Conditions</a>
+      <a href="refunds.html">Cancellation & Refunds</a>
+      <a href="community-guidelines.html">Community Guidelines</a>
+
+    </div>
+
+  </div>
+
+
+  <div class="container footer-bottom">
+
+    <span>
+      © 2026 Fixzeers. All rights reserved.
+    </span>
+
+    <span>
+      Made for local businesses & customers in India.
+    </span>
+
+  </div>
+
+</footer>
+
+
+<script src="app.js"></script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+  const loading =
+    document.getElementById("dashboardLoading");
+
+  const errorBox =
+    document.getElementById("dashboardError");
+
+  const errorMessage =
+    document.getElementById("dashboardErrorMessage");
+
+  const content =
+    document.getElementById("dashboardContent");
+
+
+  function showError(message) {
+
+    loading.style.display = "none";
+
+    content.style.display = "none";
+
+    errorBox.style.display = "block";
+
+    errorMessage.textContent = message;
+
+  }
+
+
+  function escapeValue(value) {
+
+    if (value === null || value === undefined) {
+      return "";
+    }
+
+    return String(value);
+
+  }
+
+
+  function getInitials(name) {
+
+    if (!name) return "--";
+
+    return name
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(word => word.charAt(0).toUpperCase())
+      .join("");
+
+  }
+
+
+  function formatDate(value) {
+
+    if (!value) {
+      return "Not available";
+    }
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return "Not available";
+    }
+
+    return date.toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    });
+
+  }
+
+
+  function getGreeting() {
+
+    const hour = new Date().getHours();
+
+    if (hour < 12) {
+      return "Good morning";
+    }
+
+    if (hour < 17) {
+      return "Good afternoon";
+    }
+
+    return "Good evening";
+
+  }
+
+
+  try {
+
+    const token =
+      localStorage.getItem("fixzeers_token");
+
+
+    if (!token) {
+
+      showError(
+        "You are not logged in. Please log in as a professional."
+      );
+
+      return;
+
+    }
+
+
+    /*
+      STEP 1
+      Get currently logged-in user
+    */
+
+    const meResponse =
+      await fetch(
+        "https://fixzeers-api.onrender.com/api/auth/me",
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      );
+
+
+    if (!meResponse.ok) {
+
+      throw new Error(
+        "Your login session has expired. Please log in again."
+      );
+
+    }
+
+
+    const meData =
+      await meResponse.json();
+
+
+    const user =
+      meData.user;
+
+
+    if (!user) {
+
+      throw new Error(
+        "Could not identify the logged-in user."
+      );
+
+    }
+
+
+    if (user.role !== "professional") {
+
+      showError(
+        "This dashboard is only available for professional accounts."
+      );
+
+      return;
+
+    }
+
+
+    /*
+      STEP 2
+      Get professional profile
+    */
+
+    let professional = {};
+
+    try {
+
+      const profileResponse =
+        await fetch(
+          `https://fixzeers-api.onrender.com/api/professionals/${encodeURIComponent(user.id)}`
+        );
+
+
+      if (profileResponse.ok) {
+
+        const profileData =
+          await profileResponse.json();
+
+        professional =
+          profileData.professional ||
+          profileData.profile ||
+          profileData ||
+          {};
+
+      }
+
+    } catch (profileError) {
+
+      console.warn(
+        "Professional profile could not be loaded:",
+        profileError
+      );
+
+    }
+
+
+    /*
+      STEP 3
+      Get reputation
+    */
+
+    let reputation = {};
+
+    try {
+
+      const reputationResponse =
+        await fetch(
+          "https://fixzeers-api.onrender.com/api/professionals/me/reputation",
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          }
+        );
+
+
+      if (reputationResponse.ok) {
+
+        const reputationData =
+          await reputationResponse.json();
+
+        reputation =
+          reputationData.reputation ||
+          reputationData.score ||
+          reputationData ||
+          {};
+
+      }
+
+    } catch (reputationError) {
+
+      console.warn(
+        "Reputation could not be loaded:",
+        reputationError
+      );
+
+    }
+
+
+    /*
+      STEP 4
+      Get jobs
+    */
+
+    let jobs = [];
+
+    try {
+
+      const jobsResponse =
+        await fetch(
+          "https://fixzeers-api.onrender.com/api/jobs",
+          {
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          }
+        );
+
+
+      if (jobsResponse.ok) {
+
+        const jobsData =
+          await jobsResponse.json();
+
+        jobs =
+          Array.isArray(jobsData.jobs)
+            ? jobsData.jobs
+            : [];
+
+      }
+
+    } catch (jobsError) {
+
+      console.warn(
+        "Jobs could not be loaded:",
+        jobsError
+      );
+
+    }
+
+
+    /*
+      PROFILE DATA
+    */
+
+    const name =
+      user.name ||
+      professional.name ||
+      "Professional";
+
+
+    const category =
+      professional.category ||
+      professional.category_name ||
+      professional.categoryName ||
+      "Service Professional";
+
+
+    const experience =
+      Number(
+        professional.years_experience ??
+        professional.yearsExperience ??
+        0
+      );
+
+
+    const serviceArea =
+      professional.service_area ||
+      professional.serviceArea ||
+      "Not specified";
+
+
+    const verification =
+      professional.verification_status ||
+      professional.verificationStatus ||
+      "new";
+
+
+    /*
+      REPUTATION DATA
+    */
+
+    const score =
+      Number(
+        reputation.score ??
+        reputation.fixzeer_score ??
+        reputation.fixzeerScore ??
+        professional.score ??
+        0
+      );
+
+
+    const rating =
+      Number(
+        reputation.average_rating ??
+        reputation.averageRating ??
+        professional.average_rating ??
+        professional.averageRating ??
+        0
+      );
+
+
+    const verifiedJobs =
+      Number(
+        reputation.verified_jobs ??
+        reputation.verifiedJobs ??
+        professional.verified_jobs ??
+        professional.verifiedJobs ??
+        0
+      );
+
+
+    const completionRate =
+      Number(
+        reputation.completion_rate ??
+        reputation.completionRate ??
+        professional.completion_rate ??
+        professional.completionRate ??
+        0
+      );
+
+
+    /*
+      JOB COUNTS
+
+      These are calculated from the real jobs
+      returned by the backend.
+    */
+
+    const completedJobs =
+      jobs.filter(job =>
+        job.status === "completed" ||
+        job.status === "customer_confirmed"
+      );
+
+
+    const requestedJobs =
+      jobs.filter(job =>
+        job.status === "requested"
+      );
+
+
+    const now =
+      new Date();
+
+
+    const thisMonthJobs =
+      completedJobs.filter(job => {
+
+        const date =
+          new Date(
+            job.completed_at ||
+            job.updated_at ||
+            job.created_at
+          );
+
+        return (
+          !Number.isNaN(date.getTime()) &&
+          date.getMonth() === now.getMonth() &&
+          date.getFullYear() === now.getFullYear()
+        );
+
+      });
+
+
+    /*
+      UPDATE PAGE
+    */
+
+    document.getElementById("welcomeTitle")
+      .textContent =
+      `${getGreeting()}, ${name}.`;
+
+
+    document.getElementById("profileName")
+      .textContent =
+      name;
+
+
+    document.getElementById("profileCategory")
+      .textContent =
+      experience
+        ? `${category} • ${experience} years experience`
+        : category;
+
+
+    document.getElementById("profileAvatar")
+      .textContent =
+      getInitials(name);
+
+
+    /*
+      VERIFICATION STATUS
+    */
+
+    const verificationElement =
+      document.getElementById("verificationStatus");
+
+
+    const verificationLabels = {
+
+      new: "New profile",
+
+      verified: "✓ Fixzeers Verified",
+
+      trusted: "✓ Trusted Fixzeer",
+
+      top: "✓ Top Fixzeer"
+
+    };
+
+
+    verificationElement.textContent =
+      verificationLabels[verification] ||
+      "New profile";
+
+
+    /*
+      SCORE
+    */
+
+    document.getElementById("scoreValue")
+      .textContent =
+      Number.isFinite(score)
+        ? score
+        : 0;
+
+
+    const scoreMessage =
+      document.getElementById("scoreMessage");
+
+
+    if (score >= 80) {
+
+      scoreMessage.textContent =
+        "Strong trust signal";
+
+    } else if (score >= 50) {
+
+      scoreMessage.textContent =
+        "Growing trust signal";
+
+    } else {
+
+      scoreMessage.textContent =
+        "Building your reputation";
+
+    }
+
+
+    /*
+      JOBS
+    */
+
+    document.getElementById("jobsValue")
+      .textContent =
+      Number.isFinite(verifiedJobs)
+        ? verifiedJobs.toLocaleString("en-IN")
+        : "0";
+
+
+    /*
+      RATING
+    */
+
+    document.getElementById("ratingValue")
+      .textContent =
+      rating > 0
+        ? `${rating.toFixed(1)} ★`
+        : "New";
+
+
+    /*
+      THIS MONTH
+    */
+
+    document.getElementById("monthJobsValue")
+      .textContent =
+      thisMonthJobs.length;
+
+
+    /*
+      EXPERIENCE
+    */
+
+    document.getElementById("experienceValue")
+      .textContent =
+      experience > 0
+        ? `${experience} years`
+        : "Not specified";
+
+
+    /*
+      SERVICE AREA
+    */
+
+    document.getElementById("serviceAreaValue")
+      .textContent =
+      serviceArea;
+
+
+    /*
+      COMPLETION
+    */
+
+    document.getElementById("completionValue")
+      .textContent =
+      `${Math.round(completionRate)}%`;
+
+
+    /*
+      SKILLS
+    */
+
+    const skillsContainer =
+      document.getElementById("skillsContainer");
+
+
+    const skills =
+      Array.isArray(professional.skills)
+        ? professional.skills
+        : [];
+
+
+    if (skills.length > 0) {
+
+      skillsContainer.innerHTML =
+        skills
+          .map(skill =>
+            `<span class="skill">${escapeValue(skill)}</span>`
+          )
+          .join(" ");
+
+    } else {
+
+      skillsContainer.innerHTML =
+        `<p class="muted">
+          No skills added yet.
+        </p>`;
+
+    }
+
+
+    /*
+      REQUESTS
+    */
+
+    const requestsMessage =
+      document.getElementById("requestsMessage");
+
+
+    if (requestedJobs.length === 1) {
+
+      requestsMessage.textContent =
+        "You have 1 new service request.";
+
+    } else if (requestedJobs.length > 1) {
+
+      requestsMessage.textContent =
+        `You have ${requestedJobs.length} new service requests.`;
+
+    } else {
+
+      requestsMessage.textContent =
+        "No new service requests right now.";
+
+    }
+
+
+    /*
+      PUBLIC PROFILE LINK
+    */
+
+    document.getElementById("publicProfileLink")
+      .href =
+      `professional.html?id=${encodeURIComponent(user.id)}`;
+
+
+    /*
+      ACCOUNT INFORMATION
+    */
+
+    document.getElementById("phoneValue")
+      .textContent =
+      user.phone ||
+      "Not available";
+
+
+    document.getElementById("emailValue")
+      .textContent =
+      user.email ||
+      "Not provided";
+
+
+    document.getElementById("memberSinceValue")
+      .textContent =
+      formatDate(user.created_at);
+
+
+    /*
+      SHOW DASHBOARD
+    */
+
+    loading.style.display = "none";
+
+    content.style.display = "block";
+
+
+  } catch (error) {
+
+    console.error(
+      "Dashboard loading error:",
+      error
+    );
+
+
+    showError(
+      error.message ||
+      "Unable to load your dashboard."
+    );
+
+  }
+
+});
+
+</script>
+
+</body>
+</html>
