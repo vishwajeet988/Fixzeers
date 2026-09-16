@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -9,566 +10,846 @@
 
 <body>
 
-<nav class="nav">
-  <div class="container nav-inner">
-
-    <a class="logo" href="index.html">
-      Fix<span>zeers</span>
-    </a>
-
-    <div class="nav-links">
-      <a href="search.html">Find a Pro</a>
-      <a href="how-it-works.html">How it works</a>
-      <a href="about.html">About</a>
-      <a href="help.html">Help</a>
-    </div>
-
-    <div class="nav-actions">
-      <a class="btn btn-light" href="login.html">Login</a>
-      <a class="btn btn-primary" href="register.html">Register</a>
-    </div>
-
-    <button class="menu" aria-label="Menu">☰</button>
-
-  </div>
-</nav>
-
-
-<main class="page">
-
-  <div class="container">
-
-    <div class="form-card">
-
-      <span class="kicker">For professionals</span>
-
-      <h1 style="font-size:38px">Become a Fixzeer</h1>
-
-      <p class="muted">
-        Build a professional profile around your real work and customer reputation.
-      </p>
-
-
-      <form id="professionalRegisterForm">
-
-        <div class="split">
-
-          <div>
-            <label for="fullName">Full name</label>
-            <input
-              id="fullName"
-              name="name"
-              type="text"
-              required
-              placeholder="Your full name"
-            >
-          </div>
-
-          <div>
-            <label for="phone">Phone</label>
-            <input
-              id="phone"
-              name="phone"
-              type="tel"
-              required
-              placeholder="+91..."
-            >
-          </div>
-
-        </div>
-
-
-        <label for="email">Email</label>
-
-        <input
-          id="email"
-          name="email"
-          type="email"
-          placeholder="you@example.com"
-        >
-
-
-        <label for="password">Password</label>
-
-        <input
-          id="password"
-          name="password"
-          type="password"
-          required
-          minlength="8"
-          placeholder="Create a password"
-        >
-
-        <p class="muted" style="font-size:13px;margin-top:-8px">
-          Password must be at least 8 characters.
-        </p>
-
-
-        <label for="category">Primary service</label>
-
-        <select id="category" name="category" required>
-
-          <option value="">Choose a category</option>
-
-          <option value="Electrician">Electrician</option>
-          <option value="Plumber">Plumber</option>
-          <option value="AC Technician">AC Technician</option>
-          <option value="Mechanic">Mechanic</option>
-          <option value="Painter">Painter</option>
-          <option value="Carpenter">Carpenter</option>
-          <option value="Home Helper">Home Helper</option>
-          <option value="Other Services">Other Services</option>
-
-        </select>
-
-
-        <label for="yearsExperience">Years of experience</label>
-
-        <input
-          id="yearsExperience"
-          name="yearsExperience"
-          type="number"
-          min="0"
-          max="60"
-          placeholder="e.g. 5"
-        >
-
-
-        <label for="serviceArea">Service area</label>
-
-        <input
-          id="serviceArea"
-          name="serviceArea"
-          type="text"
-          placeholder="e.g. Bhopal, MP Nagar"
-        >
-
-
-        <label for="skills">Skills</label>
-
-        <input
-          id="skills"
-          name="skills"
-          type="text"
-          placeholder="e.g. wiring, fan installation, MCB installation"
-        >
-
-
-        <label for="portfolio">Portfolio / work photos</label>
-
-        <input
-          id="portfolio"
-          name="portfolio"
-          type="file"
-          multiple
-          accept="image/*"
-        >
-
-        <p class="muted" style="font-size:13px">
-          Work photos can be added to your profile later. File upload storage is not enabled yet.
-        </p>
-
-
-        <label for="certificates">Relevant certificates (optional)</label>
-
-        <input
-          id="certificates"
-          name="certificates"
-          type="file"
-        >
-
-        <p class="muted" style="font-size:13px">
-          Certificate upload storage is not enabled yet.
-        </p>
-
-
-        <label for="references">References (optional)</label>
-
-        <textarea
-          id="references"
-          name="references"
-          rows="3"
-          placeholder="Customer or business references"
-        ></textarea>
-
-
-        <button
-          id="registerProfessionalBtn"
-          class="btn btn-primary"
-          type="submit"
-        >
-          Create professional profile
-        </button>
-
-      </form>
-
-
-      <div class="notice">
-
-        Initial onboarding does not require government ID.
-        Verification will use phone, profile information, work evidence
-        and other appropriate checks.
-
-      </div>
-
-
-      <p style="text-align:center">
-        Already a Fixzeer?
-        <a href="worker-login.html">
-          <strong>Professional login</strong>
-        </a>
-      </p>
-
-    </div>
-
-  </div>
-
-</main>
-
-
-<div class="toast"></div>
-
-
-<footer class="footer">
-
-  <div class="container footer-grid">
-
-    <div>
+  <nav class="nav">
+    <div class="container nav-inner">
 
       <a class="logo" href="index.html">
         Fix<span>zeers</span>
       </a>
 
-      <p style="color:#bcb4ac">
-        Trust who you hire. A reputation-first platform for local service professionals.
-      </p>
+      <div class="nav-links">
+        <a href="search.html">Find a Pro</a>
+        <a href="how-it-works.html">How it works</a>
+        <a href="about.html">About</a>
+        <a href="help.html">Help</a>
+      </div>
+
+      <div class="nav-actions">
+        <a class="btn btn-light" href="login.html">Login</a>
+        <a class="btn btn-primary" href="register.html">Register</a>
+      </div>
+
+      <button class="menu" aria-label="Menu">☰</button>
+
+    </div>
+  </nav>
+
+
+  <main class="page">
+
+    <div class="container">
+
+      <div class="form-card">
+
+        <span class="kicker">For professionals</span>
+
+        <h1 style="font-size:38px">Become a Fixzeer</h1>
+
+        <p class="muted">
+          Build a professional profile around your real work and customer reputation.
+        </p>
+
+
+        <form id="professionalRegisterForm">
+
+          <div class="split">
+
+            <div>
+              <label for="fullName">Full name</label>
+
+              <input
+                id="fullName"
+                name="name"
+                type="text"
+                required
+                placeholder="Your full name"
+              >
+            </div>
+
+
+            <div>
+              <label for="phone">Phone</label>
+
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                required
+                placeholder="+91 9876543210"
+              >
+            </div>
+
+          </div>
+
+
+          <label for="email">Email</label>
+
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+          >
+
+
+          <label for="password">Password</label>
+
+          <input
+            id="password"
+            name="password"
+            type="password"
+            required
+            minlength="8"
+            placeholder="Create a password"
+          >
+
+          <p class="muted" style="font-size:13px;margin-top:-8px">
+            Password must be at least 8 characters.
+          </p>
+
+
+          <label for="category">Primary service</label>
+
+          <select
+            id="category"
+            name="category"
+            required
+          >
+
+            <option value="">Choose a category</option>
+
+            <option value="Electrician">Electrician</option>
+            <option value="Plumber">Plumber</option>
+            <option value="AC Technician">AC Technician</option>
+            <option value="Mechanic">Mechanic</option>
+            <option value="Painter">Painter</option>
+            <option value="Carpenter">Carpenter</option>
+            <option value="Home Helper">Home Helper</option>
+            <option value="Other Services">Other Services</option>
+
+          </select>
+
+
+          <label for="yearsExperience">
+            Years of experience
+          </label>
+
+          <input
+            id="yearsExperience"
+            name="yearsExperience"
+            type="number"
+            min="0"
+            max="60"
+            placeholder="e.g. 5"
+          >
+
+
+          <label for="serviceArea">
+            Service area
+          </label>
+
+          <input
+            id="serviceArea"
+            name="serviceArea"
+            type="text"
+            placeholder="e.g. Bhopal, MP Nagar"
+          >
+
+
+          <label for="skills">
+            Skills
+          </label>
+
+          <input
+            id="skills"
+            name="skills"
+            type="text"
+            placeholder="e.g. wiring, fan installation, MCB installation"
+          >
+
+          <p class="muted" style="font-size:13px;margin-top:-8px">
+            Separate multiple skills with commas.
+          </p>
+
+
+          <label for="portfolio">
+            Portfolio / work photos
+          </label>
+
+          <input
+            id="portfolio"
+            name="portfolio"
+            type="file"
+            multiple
+            accept="image/*"
+          >
+
+          <p class="muted" style="font-size:13px">
+            Work photos can be added to your profile later.
+            File upload storage is not enabled yet.
+          </p>
+
+
+          <label for="certificates">
+            Relevant certificates (optional)
+          </label>
+
+          <input
+            id="certificates"
+            name="certificates"
+            type="file"
+          >
+
+          <p class="muted" style="font-size:13px">
+            Certificate upload storage is not enabled yet.
+          </p>
+
+
+          <label for="references">
+            References (optional)
+          </label>
+
+          <textarea
+            id="references"
+            name="references"
+            rows="3"
+            placeholder="Enter each customer or business reference on a separate line"
+          ></textarea>
+
+
+          <button
+            id="registerProfessionalBtn"
+            class="btn btn-primary"
+            type="submit"
+          >
+            Create professional profile
+          </button>
+
+        </form>
+
+
+        <div class="notice">
+
+          Initial onboarding does not require government ID.
+          Verification will use phone, profile information, work evidence
+          and other appropriate checks.
+
+        </div>
+
+
+        <p style="text-align:center">
+          Already a Fixzeer?
+          <a href="worker-login.html">
+            <strong>Professional login</strong>
+          </a>
+        </p>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <div class="toast"></div>
+
+
+  <footer class="footer">
+
+    <div class="container footer-grid">
+
+      <div>
+
+        <a class="logo" href="index.html">
+          Fix<span>zeers</span>
+        </a>
+
+        <p style="color:#bcb4ac">
+          Trust who you hire. A reputation-first platform for local service professionals.
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <h4>For Customers</h4>
+
+        <a href="search.html">Find a Professional</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="help.html">Help Center</a>
+        <a href="contact.html">Contact Us</a>
+
+      </div>
+
+
+      <div>
+
+        <h4>For Professionals</h4>
+
+        <a href="worker-register.html">Become a Fixzeer</a>
+        <a href="worker-login.html">Professional Login</a>
+        <a href="worker-dashboard.html">Dashboard</a>
+        <a href="professional-trust.html">Trust & Reputation</a>
+
+      </div>
+
+
+      <div>
+
+        <h4>Company & Legal</h4>
+
+        <a href="about.html">About Us</a>
+        <a href="careers.html">Careers</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms & Conditions</a>
+        <a href="refunds.html">Cancellation & Refunds</a>
+        <a href="community-guidelines.html">Community Guidelines</a>
+
+      </div>
 
     </div>
 
 
-    <div>
+    <div class="container footer-bottom">
 
-      <h4>For Customers</h4>
+      <span>
+        © 2026 Fixzeers. All rights reserved.
+      </span>
 
-      <a href="search.html">Find a Professional</a>
-      <a href="how-it-works.html">How It Works</a>
-      <a href="help.html">Help Center</a>
-      <a href="contact.html">Contact Us</a>
-
-    </div>
-
-
-    <div>
-
-      <h4>For Professionals</h4>
-
-      <a href="worker-register.html">Become a Fixzeer</a>
-      <a href="worker-login.html">Professional Login</a>
-      <a href="worker-dashboard.html">Dashboard</a>
-      <a href="professional-trust.html">Trust & Reputation</a>
+      <span>
+        Made for local businesses & customers in India.
+      </span>
 
     </div>
 
-
-    <div>
-
-      <h4>Company & Legal</h4>
-
-      <a href="about.html">About Us</a>
-      <a href="careers.html">Careers</a>
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="terms.html">Terms & Conditions</a>
-      <a href="refunds.html">Cancellation & Refunds</a>
-      <a href="community-guidelines.html">Community Guidelines</a>
-
-    </div>
-
-  </div>
+  </footer>
 
 
-  <div class="container footer-bottom">
-
-    <span>© 2026 Fixzeers. All rights reserved.</span>
-
-    <span>Made for local businesses & customers in India.</span>
-
-  </div>
-
-</footer>
+  <script src="app.js"></script>
 
 
-<script src="app.js"></script>
+  <script>
 
+    const API =
+      "https://fixzeers-api.onrender.com/api";
 
-<script>
-
-const API = "https://fixzeers-api.onrender.com/api";
-
-
-/*
-  Category names → database category IDs
-
-  Current Fixzeers seed data:
-  1 = AC Technician
-  2 = Carpenter
-  3 = Electrician
-  4 = Home Helper
-  5 = Mechanic
-  6 = Other Services
-  7 = Painter
-  8 = Plumber
-*/
-
-const categoryIds = {
-  "AC Technician": 1,
-  "Carpenter": 2,
-  "Electrician": 3,
-  "Home Helper": 4,
-  "Mechanic": 5,
-  "Other Services": 6,
-  "Painter": 7,
-  "Plumber": 8
-};
-
-
-const form = document.getElementById("professionalRegisterForm");
-
-const button = document.getElementById("registerProfessionalBtn");
-
-
-form.addEventListener("submit", async function(event) {
-
-  event.preventDefault();
-
-
-  const name =
-    document.getElementById("fullName").value.trim();
-
-  const phone =
-    document.getElementById("phone").value.trim();
-
-  const email =
-    document.getElementById("email").value.trim();
-
-  const password =
-    document.getElementById("password").value;
-
-  const category =
-    document.getElementById("category").value;
-
-  const yearsExperience =
-    document.getElementById("yearsExperience").value;
-
-  const serviceArea =
-    document.getElementById("serviceArea").value.trim();
-
-  const skills =
-    document.getElementById("skills").value.trim();
-
-  const references =
-    document.getElementById("references").value.trim();
-
-
-  if (!name || !phone || !password || !category) {
-
-    toast("Please fill in all required fields.");
-
-    return;
-  }
-
-
-  if (password.length < 8) {
-
-    toast("Password must be at least 8 characters.");
-
-    return;
-  }
-
-
-  button.disabled = true;
-
-  button.textContent = "Creating account...";
-
-
-  try {
 
     /*
-      STEP 1
-      Create professional account
-    */
+     * Database category IDs
+     *
+     * 1 = AC Technician
+     * 2 = Carpenter
+     * 3 = Electrician
+     * 4 = Home Helper
+     * 5 = Mechanic
+     * 6 = Other Services
+     * 7 = Painter
+     * 8 = Plumber
+     */
 
-    const registerResponse = await fetch(
-      `${API}/auth/register`,
-      {
-        method: "POST",
+    const categoryIds = {
 
-        headers: {
-          "Content-Type": "application/json"
-        },
+      "AC Technician": 1,
 
-        body: JSON.stringify({
+      "Carpenter": 2,
 
-          name: name,
+      "Electrician": 3,
 
-          phone: phone,
+      "Home Helper": 4,
 
-          email: email || undefined,
+      "Mechanic": 5,
 
-          password: password,
+      "Other Services": 6,
 
-          role: "professional"
+      "Painter": 7,
 
-        })
-      }
-    );
+      "Plumber": 8
+
+    };
 
 
-    const registerData =
-      await registerResponse.json();
-
-
-    if (!registerResponse.ok) {
-
-      throw new Error(
-        registerData.error ||
-        "Professional registration failed."
+    const form =
+      document.getElementById(
+        "professionalRegisterForm"
       );
 
-    }
 
-
-    /*
-      Save authentication
-    */
-
-    localStorage.setItem(
-      "fixzeers_token",
-      registerData.token
-    );
-
-
-    localStorage.setItem(
-      "fixzeers_user",
-      JSON.stringify(registerData.user)
-    );
-
-
-    /*
-      STEP 2
-      Update professional profile
-    */
-
-    button.textContent =
-      "Setting up profile...";
-
-
-    const profileResponse = await fetch(
-      `${API}/professionals/profile/me`,
-      {
-        method: "PUT",
-
-        headers: {
-
-          "Content-Type": "application/json",
-
-          "Authorization":
-            `Bearer ${registerData.token}`
-
-        },
-
-        body: JSON.stringify({
-
-          categoryId:
-            categoryIds[category],
-
-          yearsExperience:
-            yearsExperience
-              ? Number(yearsExperience)
-              : undefined,
-
-          serviceArea:
-            serviceArea || undefined,
-
-          skills:
-            skills || undefined,
-
-          referencesText:
-            references || undefined
-
-        })
-      }
-    );
-
-
-    const profileData =
-      await profileResponse.json();
-
-
-    if (!profileResponse.ok) {
-
-      throw new Error(
-        profileData.error ||
-        "Professional profile setup failed."
+    const button =
+      document.getElementById(
+        "registerProfessionalBtn"
       );
 
-    }
+
+    form.addEventListener(
+      "submit",
+      async function (event) {
+
+        event.preventDefault();
 
 
-    /*
-      Registration successful
-    */
+        /*
+         * Read form values
+         */
 
-    toast(
-      "Professional account created successfully!"
-    );
-
-
-    setTimeout(function() {
-
-      window.location.href =
-        "worker-dashboard.html";
-
-    }, 1000);
+        const name =
+          document
+            .getElementById("fullName")
+            .value
+            .trim();
 
 
-  } catch (error) {
-
-    console.error(
-      "Professional registration error:",
-      error
-    );
-
-
-    /*
-      If registration failed after token creation,
-      don't leave a partially authenticated session.
-    */
-
-    localStorage.removeItem(
-      "fixzeers_token"
-    );
-
-    localStorage.removeItem(
-      "fixzeers_user"
-    );
+        const phone =
+          document
+            .getElementById("phone")
+            .value
+            .trim();
 
 
-    toast(
-      error.message ||
-      "Something went wrong. Please try again."
-    );
+        const email =
+          document
+            .getElementById("email")
+            .value
+            .trim();
 
 
-    button.disabled = false;
+        const password =
+          document
+            .getElementById("password")
+            .value;
 
-    button.textContent =
-      "Create professional profile";
 
-  }
+        const category =
+          document
+            .getElementById("category")
+            .value;
 
-});
 
-</script>
+        const yearsExperience =
+          document
+            .getElementById("yearsExperience")
+            .value;
+
+
+        const serviceArea =
+          document
+            .getElementById("serviceArea")
+            .value
+            .trim();
+
+
+        const skillsInput =
+          document
+            .getElementById("skills")
+            .value
+            .trim();
+
+
+        const referencesInput =
+          document
+            .getElementById("references")
+            .value
+            .trim();
+
+
+        /*
+         * Basic validation
+         */
+
+        if (
+          !name ||
+          !phone ||
+          !password ||
+          !category
+        ) {
+
+          toast(
+            "Please fill in all required fields."
+          );
+
+          return;
+        }
+
+
+        /*
+         * Normalize phone number
+         *
+         * Accept:
+         * 9876543210
+         * +919876543210
+         * +91 9876543210
+         */
+
+        const normalizedPhone =
+          phone.replace(
+            /[\s-]/g,
+            ""
+          );
+
+
+        if (
+          !/^(\+91)?[6-9]\d{9}$/.test(
+            normalizedPhone
+          )
+        ) {
+
+          toast(
+            "Please enter a valid 10-digit Indian mobile number."
+          );
+
+          return;
+        }
+
+
+        /*
+         * Password validation
+         */
+
+        if (password.length < 8) {
+
+          toast(
+            "Password must be at least 8 characters."
+          );
+
+          return;
+        }
+
+
+        /*
+         * Convert comma-separated skills
+         * into the array expected by backend.
+         *
+         * Example:
+         *
+         * "Wiring, Fan Installation, MCB Installation"
+         *
+         * becomes:
+         *
+         * [
+         *   "Wiring",
+         *   "Fan Installation",
+         *   "MCB Installation"
+         * ]
+         */
+
+        const skills =
+          skillsInput
+            ? skillsInput
+                .split(",")
+                .map(
+                  skill =>
+                    skill.trim()
+                )
+                .filter(Boolean)
+            : undefined;
+
+
+        /*
+         * Convert references into an array.
+         *
+         * Each line becomes one reference.
+         */
+
+        const referencesText =
+          referencesInput
+            ? referencesInput
+                .split("\n")
+                .map(
+                  reference =>
+                    reference.trim()
+                )
+                .filter(Boolean)
+            : undefined;
+
+
+        /*
+         * Disable button while registering
+         */
+
+        button.disabled = true;
+
+        button.textContent =
+          "Creating account...";
+
+
+        try {
+
+          /*
+           * STEP 1
+           * Create professional user account
+           */
+
+          const registerResponse =
+            await fetch(
+              `${API}/auth/register`,
+              {
+
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify({
+
+                  name: name,
+
+                  phone:
+                    normalizedPhone,
+
+                  email:
+                    email || undefined,
+
+                  password:
+                    password,
+
+                  role:
+                    "professional"
+
+                })
+
+              }
+            );
+
+
+          const registerData =
+            await registerResponse.json();
+
+
+          /*
+           * Handle registration errors
+           */
+
+          if (!registerResponse.ok) {
+
+            const details =
+              registerData.details;
+
+            let message =
+              registerData.error ||
+              "Professional registration failed.";
+
+
+            if (
+              Array.isArray(details) &&
+              details.length > 0 &&
+              details[0].message
+            ) {
+
+              message =
+                details[0].message;
+
+            }
+
+
+            throw new Error(message);
+          }
+
+
+          /*
+           * Make sure token exists
+           */
+
+          if (
+            !registerData.token ||
+            !registerData.user
+          ) {
+
+            throw new Error(
+              "Registration succeeded but authentication data was not returned."
+            );
+
+          }
+
+
+          /*
+           * Save authentication
+           */
+
+          localStorage.setItem(
+            "fixzeers_token",
+            registerData.token
+          );
+
+
+          localStorage.setItem(
+            "fixzeers_user",
+            JSON.stringify(
+              registerData.user
+            )
+          );
+
+
+          /*
+           * STEP 2
+           * Update professional profile
+           */
+
+          button.textContent =
+            "Setting up profile...";
+
+
+          const profileBody = {
+
+            categoryId:
+              categoryIds[category],
+
+            yearsExperience:
+              yearsExperience
+                ? Number(yearsExperience)
+                : undefined,
+
+            serviceArea:
+              serviceArea || undefined,
+
+            skills:
+              skills,
+
+            referencesText:
+              referencesText
+
+          };
+
+
+          const profileResponse =
+            await fetch(
+              `${API}/professionals/profile/me`,
+              {
+
+                method: "PUT",
+
+                headers: {
+
+                  "Content-Type":
+                    "application/json",
+
+                  "Authorization":
+                    `Bearer ${registerData.token}`
+
+                },
+
+                body:
+                  JSON.stringify(
+                    profileBody
+                  )
+
+              }
+            );
+
+
+          const profileData =
+            await profileResponse.json();
+
+
+          /*
+           * Handle profile errors
+           */
+
+          if (!profileResponse.ok) {
+
+            const details =
+              profileData.details;
+
+            let message =
+              profileData.error ||
+              "Professional profile setup failed.";
+
+
+            if (
+              Array.isArray(details) &&
+              details.length > 0 &&
+              details[0].message
+            ) {
+
+              message =
+                details[0].message;
+
+            }
+
+
+            throw new Error(message);
+
+          }
+
+
+          /*
+           * STEP 3
+           * Registration complete
+           */
+
+          localStorage.setItem(
+            "fixzeers_user",
+            JSON.stringify({
+
+              ...registerData.user,
+
+              role:
+                "professional"
+
+            })
+          );
+
+
+          toast(
+            "Professional account created successfully!"
+          );
+
+
+          /*
+           * Redirect to professional dashboard
+           */
+
+          setTimeout(
+            function () {
+
+              window.location.href =
+                "worker-dashboard.html";
+
+            },
+            1000
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "Professional registration error:",
+            error
+          );
+
+
+          /*
+           * Clear authentication if
+           * registration/profile setup failed.
+           */
+
+          localStorage.removeItem(
+            "fixzeers_token"
+          );
+
+          localStorage.removeItem(
+            "fixzeers_user"
+          );
+
+
+          toast(
+            error.message ||
+            "Something went wrong. Please try again."
+          );
+
+
+          button.disabled = false;
+
+          button.textContent =
+            "Create professional profile";
+
+        }
+
+      });
+
+  </script>
 
 </body>
+
 </html>
