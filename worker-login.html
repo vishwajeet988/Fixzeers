@@ -1,10 +1,272 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Professional Login | Fixzeers</title><link rel="stylesheet" href="styles.css"></head><body>
-<nav class="nav"><div class="container nav-inner"><a class="logo" href="index.html">Fix<span>zeers</span></a>
-<div class="nav-links"><a href="search.html">Find a Pro</a><a href="how-it-works.html">How it works</a><a href="about.html">About</a><a href="help.html">Help</a></div>
-<div class="nav-actions"><a class="btn btn-light" href="login.html">Login</a><a class="btn btn-primary" href="register.html">Register</a></div><button class="menu" aria-label="Menu">☰</button></div></nav>
-<main class="page"><div class="container"><div class="form-card"><span class="kicker">Professional portal</span><h1 style="font-size:38px">Fixzeer Login</h1><form onsubmit="event.preventDefault();toast('Professional login submitted in demo mode.')"><label>Phone or email</label><input required><label>Password</label><input required type="password"><button class="btn btn-primary">Login</button></form><p style="text-align:center">Want to join? <a href="worker-register.html"><strong>Become a Fixzeer</strong></a></p></div></div></main><div class="toast"></div><footer class="footer"><div class="container footer-grid">
-<div><a class="logo" href="index.html">Fix<span>zeers</span></a><p style="color:#bcb4ac">Trust who you hire. A reputation-first platform for local service professionals.</p></div>
-<div><h4>For Customers</h4><a href="search.html">Find a Professional</a><a href="how-it-works.html">How It Works</a><a href="help.html">Help Center</a><a href="contact.html">Contact Us</a></div>
-<div><h4>For Professionals</h4><a href="worker-register.html">Become a Fixzeer</a><a href="worker-login.html">Professional Login</a><a href="worker-dashboard.html">Dashboard</a><a href="professional-trust.html">Trust & Reputation</a></div>
-<div><h4>Company & Legal</h4><a href="about.html">About Us</a><a href="careers.html">Careers</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms & Conditions</a><a href="refunds.html">Cancellation & Refunds</a><a href="community-guidelines.html">Community Guidelines</a></div>
-</div><div class="container footer-bottom"><span>© 2026 Fixzeers. All rights reserved.</span><span>Made for local businesses & customers in India.</span></div></footer><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Professional Login | Fixzeers</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="index.html">Fix<span>zeers</span></a>
+
+    <div class="nav-links">
+      <a href="search.html">Find a Pro</a>
+      <a href="how-it-works.html">How it works</a>
+      <a href="about.html">About</a>
+      <a href="help.html">Help</a>
+    </div>
+
+    <div class="nav-actions">
+      <a class="btn btn-light" href="login.html">Customer Login</a>
+      <a class="btn btn-primary" href="worker-register.html">Register</a>
+    </div>
+
+    <button class="menu" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<main class="page">
+  <div class="container">
+
+    <div class="form-card">
+
+      <span class="kicker">Professional portal</span>
+
+      <h1 style="font-size:38px">Fixzeer Login</h1>
+
+      <p style="color:#6b625a;margin-bottom:24px">
+        Login to manage your professional profile, jobs and reputation.
+      </p>
+
+      <div id="errorMessage"
+           style="display:none;
+                  padding:12px 14px;
+                  margin-bottom:18px;
+                  border-radius:8px;
+                  background:#fff1f1;
+                  color:#b42318;
+                  border:1px solid #f3c2c2;">
+      </div>
+
+      <div id="successMessage"
+           style="display:none;
+                  padding:12px 14px;
+                  margin-bottom:18px;
+                  border-radius:8px;
+                  background:#effaf3;
+                  color:#18794e;
+                  border:1px solid #b7e4c7;">
+      </div>
+
+      <form id="workerLoginForm">
+
+        <label for="identifier">Phone or email</label>
+
+        <input
+          id="identifier"
+          name="identifier"
+          type="text"
+          autocomplete="username"
+          placeholder="Enter your phone or email"
+          required
+        >
+
+        <label for="password">Password</label>
+
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Enter your password"
+          required
+        >
+
+        <button
+          id="loginButton"
+          class="btn btn-primary"
+          type="submit"
+          style="width:100%;"
+        >
+          Login
+        </button>
+
+      </form>
+
+      <p style="text-align:center;margin-top:18px">
+        Forgot your password?
+        <a href="forgot-password.html">Reset password</a>
+      </p>
+
+      <p style="text-align:center">
+        Want to join?
+        <a href="worker-register.html">
+          <strong>Become a Fixzeer</strong>
+        </a>
+      </p>
+
+    </div>
+
+  </div>
+</main>
+
+<div class="toast"></div>
+
+<footer class="footer">
+  <div class="container footer-grid">
+
+    <div>
+      <a class="logo" href="index.html">Fix<span>zeers</span></a>
+      <p style="color:#bcb4ac">
+        Trust who you hire. A reputation-first platform for local service professionals.
+      </p>
+    </div>
+
+    <div>
+      <h4>For Customers</h4>
+      <a href="search.html">Find a Professional</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="help.html">Help Center</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+
+    <div>
+      <h4>For Professionals</h4>
+      <a href="worker-register.html">Become a Fixzeer</a>
+      <a href="worker-login.html">Professional Login</a>
+      <a href="worker-dashboard.html">Dashboard</a>
+      <a href="professional-trust.html">Trust & Reputation</a>
+    </div>
+
+    <div>
+      <h4>Company & Legal</h4>
+      <a href="about.html">About Us</a>
+      <a href="careers.html">Careers</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms & Conditions</a>
+      <a href="refunds.html">Cancellation & Refunds</a>
+      <a href="community-guidelines.html">Community Guidelines</a>
+    </div>
+
+  </div>
+
+  <div class="container footer-bottom">
+    <span>© 2026 Fixzeers. All rights reserved.</span>
+    <span>Made for local businesses & customers in India.</span>
+  </div>
+</footer>
+
+<script>
+  const API = "https://fixzeers-api.onrender.com/api";
+
+  const form = document.getElementById("workerLoginForm");
+  const loginButton = document.getElementById("loginButton");
+  const errorMessage = document.getElementById("errorMessage");
+  const successMessage = document.getElementById("successMessage");
+
+  function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.style.display = "block";
+    successMessage.style.display = "none";
+  }
+
+  function showSuccess(message) {
+    successMessage.textContent = message;
+    successMessage.style.display = "block";
+    errorMessage.style.display = "none";
+  }
+
+  function setLoading(isLoading) {
+    loginButton.disabled = isLoading;
+    loginButton.textContent = isLoading ? "Logging in..." : "Login";
+  }
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    errorMessage.style.display = "none";
+    successMessage.style.display = "none";
+
+    const identifier = document
+      .getElementById("identifier")
+      .value
+      .trim();
+
+    const password = document
+      .getElementById("password")
+      .value;
+
+    if (!identifier || !password) {
+      showError("Please enter your phone/email and password.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(`${API}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          identifier,
+          password
+        })
+      });
+
+      let data = {};
+
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          data.message ||
+          data.error ||
+          "Login failed. Please check your credentials."
+        );
+      }
+
+      if (!data.token || !data.user) {
+        throw new Error("Login succeeded but the server returned incomplete data.");
+      }
+
+      if (data.user.role !== "professional") {
+        throw new Error(
+          "This is not a professional account. Please use the customer login."
+        );
+      }
+
+      localStorage.setItem("fixzeers_token", data.token);
+      localStorage.setItem("fixzeers_user", JSON.stringify(data.user));
+
+      showSuccess("Login successful. Opening your professional dashboard...");
+
+      setTimeout(() => {
+        window.location.href = "worker-dashboard.html";
+      }, 500);
+
+    } catch (error) {
+      console.error("Professional login error:", error);
+
+      showError(
+        error.message ||
+        "Unable to connect to Fixzeers. Please try again."
+      );
+
+    } finally {
+      setLoading(false);
+    }
+  });
+</script>
+
+</body>
+</html>
