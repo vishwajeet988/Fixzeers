@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Account | Fixzeers</title><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav class="nav"><div class="container nav-inner">
+<a class="logo" href="index.html">Fix<span>zeers</span></a>
+<div class="nav-links"><a href="search.html">Find a Pro</a><a href="my-jobs.html">My Requests</a><a href="how-it-works.html">How it works</a><a href="help.html">Help</a></div>
+<div class="nav-actions" id="navActions"></div><button class="menu" aria-label="Menu">☰</button>
+</div></nav>
+<main class="page"><div class="container">
+<div class="page-title"><span class="kicker">Customer account</span><h1>My Account</h1><p class="lead">Manage your Fixzeers account and keep track of your service requests.</p></div>
+<div id="accountState" class="card">Loading your account...</div>
+<div id="accountContent" style="display:none">
+<div class="grid grid-3">
+<div class="card"><span class="muted">Name</span><h2 id="userName">—</h2></div>
+<div class="card"><span class="muted">Phone</span><h2 id="userPhone">—</h2></div>
+<div class="card"><span class="muted">Requests</span><h2 id="jobCount">0</h2><a class="btn btn-light" href="my-jobs.html">View requests</a></div>
+</div>
+<div class="card" style="margin-top:20px"><h3>Account details</h3>
+<p><strong>Email:</strong> <span id="userEmail">Not added</span></p>
+<p><strong>Account type:</strong> Customer</p>
+<p><strong>Member since:</strong> <span id="memberSince">—</span></p>
+<div class="row" style="margin-top:18px"><a class="btn btn-primary" href="search.html">Find a professional</a><button class="btn btn-light" id="logoutAccount" type="button">Log out</button></div>
+</div></div></div></main>
+<div class="toast"></div>
+<footer class="footer"><div class="container footer-grid">
+<div><a class="logo" href="index.html">Fix<span>zeers</span></a><p style="color:#bcb4ac">Trust who you hire. A reputation-first platform for local service professionals.</p></div>
+<div><h4>For Customers</h4><a href="search.html">Find a Professional</a><a href="my-jobs.html">My Requests</a><a href="help.html">Help Center</a><a href="contact.html">Contact Us</a></div>
+<div><h4>For Professionals</h4><a href="worker-register.html">Become a Fixzeer</a><a href="worker-login.html">Professional Login</a><a href="worker-dashboard.html">Dashboard</a><a href="professional-trust.html">Trust & Reputation</a></div>
+<div><h4>Company & Legal</h4><a href="about.html">About Us</a><a href="careers.html">Careers</a><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms & Conditions</a><a href="refunds.html">Cancellation & Refunds</a></div>
+</div><div class="container footer-bottom"><span>© 2026 Fixzeers. All rights reserved.</span><span>Made for local businesses & customers in India.</span></div></footer>
+<script src="app.js"></script><script>
+(async()=>{const token=getToken();if(!token){location.href="login.html";return;}
+try{const [me,jobs]=await Promise.all([api("/auth/me",{headers:{Authorization:"Bearer "+token}}),api("/jobs",{headers:{Authorization:"Bearer "+token}})]);
+if(!me.user||me.user.role!=="customer"){location.href="index.html";return;}
+const u=me.user;document.getElementById("accountState").style.display="none";document.getElementById("accountContent").style.display="block";
+document.getElementById("userName").textContent=u.name||"—";document.getElementById("userPhone").textContent=u.phone||"—";document.getElementById("userEmail").textContent=u.email||"Not added";
+document.getElementById("jobCount").textContent=(jobs.jobs||[]).length;document.getElementById("memberSince").textContent=u.created_at?new Date(u.created_at).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}):"—";
+document.getElementById("logoutAccount").onclick=()=>logout();
+}catch(e){localStorage.removeItem("fixzeers_token");localStorage.removeItem("fixzeers_user");location.href="login.html";}})();
+</script></body></html>
