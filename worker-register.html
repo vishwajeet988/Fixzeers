@@ -957,40 +957,68 @@
 
 
         /*
-         * Handle profile errors
-         */
+ * Handle profile errors
+ *
+ * IMPORTANT:
+ * The professional account was already created
+ * successfully in STEP 1.
+ *
+ * Do NOT attempt registration again.
+ */
 
-        if (
-          !profileResponse.ok
-        ) {
+if (!profileResponse.ok) {
 
-          const details =
-            profileData.details;
+  const details =
+    profileData.details;
 
+  let message =
+    profileData.error ||
+    profileData.message ||
+    "Professional profile setup failed.";
 
-          let message =
-            profileData.error ||
-            profileData.message ||
-            "Professional profile setup failed.";
+  if (
+    Array.isArray(details) &&
+    details.length > 0 &&
+    details[0].message
+  ) {
 
+    message =
+      details[0].message;
 
-          if (
-            Array.isArray(details) &&
-            details.length > 0 &&
-            details[0].message
-          ) {
+  }
 
-            message =
-              details[0].message;
+  /*
+   * Keep the authentication information so the
+   * user can continue with the newly created account.
+   */
 
-          }
+  localStorage.setItem(
+    "fixzeers_registration_pending",
+    JSON.stringify({
 
+      token:
+        registerData.token,
 
-          throw new Error(
-            message
-          );
+      user:
+        registerData.user,
 
-        }
+      profile:
+        profileBody
+
+    })
+  );
+
+  /*
+   * Make it clear that the account itself exists.
+   */
+
+  throw new Error(
+  "Your account was created, but your professional profile could not be completed. " +
+  message +
+  " Please contact support or try completing your profile after signing in."
+);
+
+}
 
 
         /*
