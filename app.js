@@ -77,8 +77,7 @@ function getInitials(name) {
 ========================= */
 
 async function loadCategories() {
-  const container = document.querySelector(".grid.grid-4");
-
+  const container = document.getElementById("categoriesGrid");
   if (!container) return;
 
   try {
