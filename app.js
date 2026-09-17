@@ -736,7 +736,75 @@ function setupToastButtons() {
       });
     });
 }
+/* =========================
+   MOBILE NAVIGATION
+========================= */
 
+function setupMobileMenu() {
+
+  const menuButton =
+    document.querySelector(".menu");
+
+  const navLinks =
+    document.querySelector(".nav-links");
+
+  const navActions =
+    document.querySelector(".nav-actions");
+
+  if (!menuButton || !navLinks) {
+    return;
+  }
+
+  menuButton.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+
+  menuButton.addEventListener("click", () => {
+
+    const isOpen =
+      navLinks.classList.toggle("mobile-open");
+
+    if (navActions) {
+      navActions.classList.toggle(
+        "mobile-open",
+        isOpen
+      );
+    }
+
+    menuButton.setAttribute(
+      "aria-expanded",
+      String(isOpen)
+    );
+
+  });
+
+  navLinks
+    .querySelectorAll("a")
+    .forEach(link => {
+
+      link.addEventListener("click", () => {
+
+        navLinks.classList.remove(
+          "mobile-open"
+        );
+
+        if (navActions) {
+          navActions.classList.remove(
+            "mobile-open"
+          );
+        }
+
+        menuButton.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+      });
+
+    });
+
+}
 /* =========================
    INITIALIZE
 ========================= */
@@ -746,6 +814,7 @@ document.addEventListener(
   async () => {
     setupSearch();
     setupToastButtons();
+    setupMobileMenu();
 
     await loadCategories();
     await loadProfessionals();
