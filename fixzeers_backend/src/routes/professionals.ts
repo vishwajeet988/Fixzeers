@@ -7,18 +7,6 @@ import { recalculateReputation } from "../utils/reputation";
 
 const router = Router();
 
-/*
-|--------------------------------------------------------------------------
-| GET /api/professionals
-|--------------------------------------------------------------------------
-| Search and list professionals
-|
-| Supported query parameters:
-|   ?q=electrician
-|   ?category=electrician
-|   ?area=Bhopal
-|--------------------------------------------------------------------------
-*/
 router.get("/", async (req, res, next) => {
   try {
     const q = String(req.query.q || "").trim();
@@ -84,17 +72,6 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-
-/*
-|--------------------------------------------------------------------------
-| GET /api/professionals/me/reputation
-|--------------------------------------------------------------------------
-| Get the logged-in professional's reputation
-|
-| IMPORTANT:
-| This route MUST be before /:id.
-|--------------------------------------------------------------------------
-*/
 router.get(
   "/me/reputation",
   requireAuth,
@@ -102,7 +79,6 @@ router.get(
   async (req: AuthRequest, res, next) => {
     try {
       const reputation = await recalculateReputation(req.user!.id);
-
       res.json(reputation);
     } catch (error) {
       next(error);
@@ -110,14 +86,6 @@ router.get(
   }
 );
 
-
-/*
-|--------------------------------------------------------------------------
-| PUT /api/professionals/profile/me
-|--------------------------------------------------------------------------
-| Update logged-in professional's profile
-|--------------------------------------------------------------------------
-*/
 const profileSchema = z.object({
   categoryId: z.number().int().positive().optional(),
 
@@ -144,7 +112,7 @@ const profileSchema = z.object({
     .optional(),
 
   skills: z
-    .array(z.string().max(100))
+    .array(z.string().trim().min(1).max(100))
     .max(30)
     .optional(),
 
@@ -154,11 +122,25 @@ const profileSchema = z.object({
     .optional(),
 
   referencesText: z
-    .array(z.string().max(500))
+    .array(z.string().trim().min(1).max(500))
     .max(10)
     .optional()
 });
 
+function validatePortfolioUrls(urls: string[]) {
+  return urls.every((value) => {
+    try {
+      const url = new URL(value);
+
+      return (
+        url.protocol === "https:" ||
+        url.protocol === "http:"
+      );
+    } catch {
+      return false;
+    }
+  });
+}
 
 router.put(
   "/profile/me",
@@ -167,6 +149,15 @@ router.put(
   async (req: AuthRequest, res, next) => {
     try {
       const data = profileSchema.parse(req.body);
+
+      if (
+        data.portfolioUrls &&
+        !validatePortfolioUrls(data.portfolioUrls)
+      ) {
+        return res.status(400).json({
+          error: "Portfolio URLs must use http or https."
+        });
+      }
 
       const result = await query(
         `UPDATE professional_profiles
@@ -222,16 +213,6 @@ router.put(
   }
 );
 
-
-/*
-|--------------------------------------------------------------------------
-| GET /api/professionals/:id
-|--------------------------------------------------------------------------
-| Get a public professional profile and reviews
-|
-| This route comes AFTER all fixed /me routes.
-|--------------------------------------------------------------------------
-*/
 router.get("/:id", async (req, res, next) => {
   try {
     const result = await query(
@@ -290,6 +271,5 @@ router.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
-
 
 export default router;

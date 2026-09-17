@@ -121,7 +121,6 @@
 
     <div>
       <h4>For Customers</h4>
-
       <a href="search.html">Find a Professional</a>
       <a href="how-it-works.html">How It Works</a>
       <a href="help.html">Help Center</a>
@@ -130,7 +129,6 @@
 
     <div>
       <h4>For Professionals</h4>
-
       <a href="worker-register.html">Become a Fixzeer</a>
       <a href="worker-login.html">Professional Login</a>
       <a href="worker-dashboard.html">Dashboard</a>
@@ -139,7 +137,6 @@
 
     <div>
       <h4>Company & Legal</h4>
-
       <a href="about.html">About Us</a>
       <a href="careers.html">Careers</a>
       <a href="privacy.html">Privacy Policy</a>
@@ -179,6 +176,52 @@
     } else {
       message.style.borderColor = "#c9dfcf";
       message.style.background = "#f1faf3";
+    }
+  }
+
+  function getSafeDestination(userRole) {
+
+    const defaultDestination =
+      userRole === "professional"
+        ? "worker-dashboard.html"
+        : "search.html";
+
+    const next =
+      new URLSearchParams(
+        window.location.search
+      ).get("next");
+
+    if (!next) {
+      return defaultDestination;
+    }
+
+    try {
+
+      const parsed = new URL(
+        next,
+        window.location.origin
+      );
+
+      if (parsed.origin !== window.location.origin) {
+        return defaultDestination;
+      }
+
+      if (!parsed.pathname.endsWith(".html")) {
+        return defaultDestination;
+      }
+
+      if (
+        parsed.search ||
+        parsed.hash
+      ) {
+        return defaultDestination;
+      }
+
+      return parsed.pathname.split("/").pop() ||
+        defaultDestination;
+
+    } catch {
+      return defaultDestination;
     }
   }
 
@@ -258,31 +301,8 @@
         "success"
       );
 
-      /*
-       * Respect an explicitly requested destination first.
-       * Otherwise redirect based on the user's role.
-       */
-
-      const next =
-        new URLSearchParams(
-          window.location.search
-        ).get("next");
-
-      let destination = next;
-
-      if (!destination) {
-
-        if (data.user?.role === "professional") {
-
-          destination = "worker-dashboard.html";
-
-        } else {
-
-          destination = "search.html";
-
-        }
-
-      }
+      const destination =
+        getSafeDestination(data.user?.role);
 
       setTimeout(() => {
 
