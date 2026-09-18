@@ -54,16 +54,69 @@ router.post(
 
       const data = createSchema.parse(req.body);
 
+      // Verify that the selected user is actually a professional
+      // and retrieve their registered service category.
       const professional = await query(
-        `SELECT user_id
-         FROM professional_profiles
-         WHERE user_id = $1`,
+        `SELECT
+           pp.user_id,
+           pp.category_id,
+           c.name AS category_name
+         FROM professional_profiles pp
+         JOIN users u
+           ON u.id = pp.user_id
+         LEFT JOIN categories c
+           ON c.id = pp.category_id
+         WHERE pp.user_id = $1
+           AND u.role = 'professional'`,
         [data.professionalId]
       );
 
-      if (!professional.rows[0]) {
+      const professionalRow = professional.rows[0];
+
+      if (!professionalRow) {
         return res.status(404).json({
           error: "Professional not found"
+        });
+      }
+
+      // A professional must have a service category before accepting
+      // category-specific jobs.
+      if (!professionalRow.category_id) {
+        return res.status(400).json({
+          error:
+            "This professional has not selected a service category yet"
+        });
+      }
+
+      // If the customer supplies a category, it MUST match the
+      // professional's registered category.
+      if (
+        data.categoryId !== undefined &&
+        data.categoryId !== professionalRow.category_id
+      ) {
+        return res.status(400).json({
+          error:
+            "Selected category does not match this professional's service category",
+          professionalCategoryId: professionalRow.category_id,
+          professionalCategory: professionalRow.category_name
+        });
+      }
+
+      // If category wasn't supplied, derive it from the professional.
+      const categoryId =
+        data.categoryId ?? professionalRow.category_id;
+
+      // Confirm that the category itself exists.
+      const category = await query(
+        `SELECT id, name
+         FROM categories
+         WHERE id = $1`,
+        [categoryId]
+      );
+
+      if (!category.rows[0]) {
+        return res.status(400).json({
+          error: "Invalid service category"
         });
       }
 
@@ -83,7 +136,7 @@ router.post(
         [
           req.user!.id,
           data.professionalId,
-          data.categoryId ?? null,
+          categoryId,
           data.title,
           data.description && data.description.length > 0
             ? data.description
@@ -255,26 +308,48 @@ router.patch(
         });
       }
 
-      if (status === "cancelled" && !isCustomer && !isProfessional && !isAdmin) {
+      if (
+        status === "cancelled" &&
+        !isCustomer &&
+        !isProfessional &&
+        !isAdmin
+      ) {
         return res.status(403).json({
-          error: "Only the customer, professional, or admin can cancel"
+          error:
+            "Only the customer, professional, or admin can cancel"
         });
       }
 
-      if (status === "disputed" && !isCustomer && !isProfessional && !isAdmin) {
+      if (
+        status === "disputed" &&
+        !isCustomer &&
+        !isProfessional &&
+        !isAdmin
+      ) {
         return res.status(403).json({
-          error: "Only the customer, professional, or admin can dispute"
+          error:
+            "Only the customer, professional, or admin can dispute"
         });
       }
 
+      // Atomic status transition prevents two concurrent requests
+      // from changing the same job based on stale status.
       const result = await query(
         `UPDATE jobs
          SET status = $1,
              updated_at = NOW()
          WHERE id = $2
+           AND status = $3
          RETURNING *`,
-        [status, req.params.id]
+        [status, req.params.id, job.status]
       );
+
+      if (!result.rows[0]) {
+        return res.status(409).json({
+          error:
+            "Job status changed before this update could be completed. Please refresh and try again."
+        });
+      }
 
       await query(
         `INSERT INTO job_events

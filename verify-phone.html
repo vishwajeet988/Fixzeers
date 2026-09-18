@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Verify Phone | Fixzeers</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+
+    <a class="logo" href="index.html">
+      Fix<span>zeers</span>
+    </a>
+
+    <div class="nav-links">
+      <a href="search.html">Find a Pro</a>
+      <a href="how-it-works.html">How it works</a>
+      <a href="about.html">About</a>
+      <a href="help.html">Help</a>
+    </div>
+
+    <div class="nav-actions">
+      <a class="btn btn-light" href="login.html">Login</a>
+      <a class="btn btn-primary" href="register.html">Register</a>
+    </div>
+
+    <button class="menu" aria-label="Menu">☰</button>
+
+  </div>
+</nav>
+
+
+<main class="page">
+
+  <div class="container">
+
+    <div class="form-card">
+
+      <span class="kicker">Phone verification</span>
+
+      <h1 style="font-size:38px">
+        Verify your phone
+      </h1>
+
+      <p class="muted">
+        Enter the 6-digit verification code sent to your phone.
+      </p>
+
+      <div id="phoneDisplay" class="notice">
+        Loading phone number...
+      </div>
+
+      <div id="message"
+           class="notice"
+           style="display:none">
+      </div>
+
+
+      <form id="verifyForm">
+
+        <label for="otp">
+          Verification code
+        </label>
+
+        <input
+          id="otp"
+          name="otp"
+          type="text"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          maxlength="6"
+          pattern="[0-9]{6}"
+          required
+          placeholder="Enter 6-digit code"
+        >
+
+        <button
+          id="verifyBtn"
+          class="btn btn-primary"
+          type="submit"
+        >
+          Verify phone
+        </button>
+
+      </form>
+
+
+      <div style="text-align:center;margin-top:18px">
+
+        <button
+          id="resendBtn"
+          type="button"
+          class="btn btn-light"
+        >
+          Resend code
+        </button>
+
+      </div>
+
+
+      <p style="text-align:center;margin-top:20px">
+
+        <a href="register.html">
+          Back to registration
+        </a>
+
+      </p>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<div class="toast"></div>
+
+
+<footer class="footer">
+
+  <div class="container footer-grid">
+
+    <div>
+
+      <a class="logo" href="index.html">
+        Fix<span>zeers</span>
+      </a>
+
+      <p style="color:#bcb4ac">
+        Trust who you hire. A reputation-first platform for local service professionals.
+      </p>
+
+    </div>
+
+
+    <div>
+
+      <h4>For Customers</h4>
+
+      <a href="search.html">
+        Find a Professional
+      </a>
+
+      <a href="how-it-works.html">
+        How It Works
+      </a>
+
+      <a href="help.html">
+        Help Center
+      </a>
+
+      <a href="contact.html">
+        Contact Us
+      </a>
+
+    </div>
+
+
+    <div>
+
+      <h4>For Professionals</h4>
+
+      <a href="worker-register.html">
+        Become a Fixzeer
+      </a>
+
+      <a href="worker-login.html">
+        Professional Login
+      </a>
+
+      <a href="worker-dashboard.html">
+        Dashboard
+      </a>
+
+      <a href="professional-trust.html">
+        Trust & Reputation
+      </a>
+
+    </div>
+
+
+    <div>
+
+      <h4>Company & Legal</h4>
+
+      <a href="about.html">
+        About Us
+      </a>
+
+      <a href="careers.html">
+        Careers
+      </a>
+
+      <a href="privacy.html">
+        Privacy Policy
+      </a>
+
+      <a href="terms.html">
+        Terms & Conditions
+      </a>
+
+      <a href="refunds.html">
+        Cancellation & Refunds
+      </a>
+
+      <a href="community-guidelines.html">
+        Community Guidelines
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <div class="container footer-bottom">
+
+    <span>
+      © 2026 Fixzeers. All rights reserved.
+    </span>
+
+    <span>
+      Made for local businesses & customers in India.
+    </span>
+
+  </div>
+
+</footer>
+
+
+<script src="app.js"></script>
+
+<script>
+
+(() => {
+
+  const API =
+    "https://fixzeers-api.onrender.com/api";
+
+  const phone =
+    sessionStorage.getItem(
+      "fixzeers_pending_phone"
+    );
+
+  const form =
+    document.querySelector("#verifyForm");
+
+  const otpInput =
+    document.querySelector("#otp");
+
+  const verifyBtn =
+    document.querySelector("#verifyBtn");
+
+  const resendBtn =
+    document.querySelector("#resendBtn");
+
+  const message =
+    document.querySelector("#message");
+
+  const phoneDisplay =
+    document.querySelector("#phoneDisplay");
+
+
+  function showMessage(text, type) {
+
+    message.textContent = text;
+
+    message.style.display = "block";
+
+    if (type === "error") {
+
+      message.style.borderColor =
+        "#f0b4a0";
+
+      message.style.background =
+        "#fff3ef";
+
+    } else {
+
+      message.style.borderColor =
+        "#c9dfcf";
+
+      message.style.background =
+        "#f1faf3";
+
+    }
+
+  }
+
+
+  function maskPhone(value) {
+
+    if (!value) return "";
+
+    if (value.length <= 4) {
+      return value;
+    }
+
+    return "******" +
+      value.slice(-4);
+
+  }
+
+
+  // No pending registration
+  if (!phone) {
+
+    phoneDisplay.textContent =
+      "No phone number is awaiting verification.";
+
+    verifyBtn.disabled = true;
+    resendBtn.disabled = true;
+
+  } else {
+
+    phoneDisplay.textContent =
+      "Verification code sent to " +
+      maskPhone(phone);
+
+  }
+
+
+  form.addEventListener(
+    "submit",
+    async (event) => {
+
+      event.preventDefault();
+
+      if (!phone) {
+
+        showMessage(
+          "Registration session not found. Please register again.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      const otp =
+        otpInput.value.trim();
+
+
+      if (!/^\d{6}$/.test(otp)) {
+
+        showMessage(
+          "Please enter a valid 6-digit verification code.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      verifyBtn.disabled = true;
+
+      verifyBtn.textContent =
+        "Verifying...";
+
+      message.style.display =
+        "none";
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API}/auth/verify-otp`,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body: JSON.stringify({
+                phone,
+                otp
+              })
+            }
+          );
+
+
+        const data =
+          await response
+            .json()
+            .catch(() => ({}));
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.error ||
+            data.message ||
+            "Verification failed."
+          );
+
+        }
+
+
+        // Save authentication session
+        const token =
+          data?.token ||
+          data?.accessToken ||
+          data?.jwt;
+
+
+        const user =
+          data?.user;
+
+
+        if (token) {
+
+          localStorage.setItem(
+            "fixzeers_token",
+            token
+          );
+
+        }
+
+
+        if (user) {
+
+          localStorage.setItem(
+            "fixzeers_user",
+            JSON.stringify(user)
+          );
+
+        }
+
+
+        // Remove temporary phone
+        sessionStorage.removeItem(
+          "fixzeers_pending_phone"
+        );
+
+
+        showMessage(
+          "Phone verified successfully. Welcome to Fixzeers!",
+          "success"
+        );
+
+
+        setTimeout(() => {
+
+          window.location.href =
+            "search.html";
+
+        }, 800);
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+          error.message ||
+          "Could not connect to the Fixzeers backend.",
+          "error"
+        );
+
+      } finally {
+
+        verifyBtn.disabled = false;
+
+        verifyBtn.textContent =
+          "Verify phone";
+
+      }
+
+    }
+  );
+
+
+  resendBtn.addEventListener(
+    "click",
+    async () => {
+
+      if (!phone) {
+
+        showMessage(
+          "Registration session not found. Please register again.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      resendBtn.disabled = true;
+
+      resendBtn.textContent =
+        "Sending...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${API}/auth/request-otp`,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body: JSON.stringify({
+                phone
+              })
+            }
+          );
+
+
+        const data =
+          await response
+            .json()
+            .catch(() => ({}));
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.error ||
+            data.message ||
+            "Could not resend verification code."
+          );
+
+        }
+
+
+        showMessage(
+          "A new verification code has been sent.",
+          "success"
+        );
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+          error.message ||
+          "Could not connect to the Fixzeers backend.",
+          "error"
+        );
+
+      } finally {
+
+        resendBtn.disabled = false;
+
+        resendBtn.textContent =
+          "Resend code";
+
+      }
+
+    }
+  );
+
+
+  // Allow only numbers in OTP field
+  otpInput.addEventListener(
+    "input",
+    () => {
+
+      otpInput.value =
+        otpInput.value
+          .replace(/\D/g, "")
+          .slice(0, 6);
+
+    }
+  );
+
+})();
+
+</script>
+
+</body>
+</html>

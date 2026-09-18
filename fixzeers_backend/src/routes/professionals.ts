@@ -226,7 +226,6 @@ router.get("/:id", async (req, res, next) => {
           p.verification_status,
           p.skills,
           p.portfolio_urls,
-          p.references_text,
           c.name AS category,
           c.slug AS category_slug,
           COALESCE(r.score, 0) AS score,
