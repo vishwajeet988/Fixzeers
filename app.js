@@ -1,5 +1,10 @@
 const API_BASE = "https://fixzeers-api.onrender.com/api";
 
+const CATEGORY_CACHE_KEY = "fixzeers_categories_cache";
+const CATEGORY_CACHE_TTL_MS = 15 * 60 * 1000;
+let categoriesRequest = null;
+let searchRequestGeneration = 0;
+
 /* =========================
    BASIC HELPERS
 ========================= */
@@ -18,6 +23,17 @@ function toast(message) {
   setTimeout(() => {
     t.style.display = "none";
   }, 2600);
+}
+
+async function measurePerformance(label, operation) {
+  const startedAt = performance.now();
+
+  try {
+    return await operation();
+  } finally {
+    const duration = Math.round(performance.now() - startedAt);
+    console.debug(`[Fixzeers perf] ${label}: ${duration}ms`);
+  }
 }
 
 async function api(path, options = {}) {
@@ -71,6 +87,64 @@ function getInitials(name) {
     .toUpperCase();
 }
 
+function readCachedCategories() {
+  try {
+    const cached = JSON.parse(
+      sessionStorage.getItem(CATEGORY_CACHE_KEY) || "null"
+    );
+
+    if (
+      cached &&
+      Array.isArray(cached.categories) &&
+      Date.now() - cached.cachedAt < CATEGORY_CACHE_TTL_MS
+    ) {
+      return cached.categories;
+    }
+  } catch {
+    // Ignore unavailable or malformed session storage.
+  }
+
+  return null;
+}
+
+function cacheCategories(categories) {
+  try {
+    sessionStorage.setItem(
+      CATEGORY_CACHE_KEY,
+      JSON.stringify({
+        cachedAt: Date.now(),
+        categories
+      })
+    );
+  } catch {
+    // Caching is an optimization; continue if storage is unavailable.
+  }
+}
+
+function getCategories() {
+  const cachedCategories = readCachedCategories();
+
+  if (cachedCategories) {
+    return Promise.resolve({ categories: cachedCategories });
+  }
+
+  if (!categoriesRequest) {
+    categoriesRequest = api("/categories")
+      .then(data => {
+        if (Array.isArray(data.categories)) {
+          cacheCategories(data.categories);
+        }
+
+        return data;
+      })
+      .finally(() => {
+        categoriesRequest = null;
+      });
+  }
+
+  return categoriesRequest;
+}
+
 
 /* =========================
    CATEGORIES
@@ -81,7 +155,7 @@ async function loadCategories() {
   if (!container) return;
 
   try {
-    const data = await api("/categories");
+    const data = await measurePerformance("categories", getCategories);
 
     if (!data.categories || !data.categories.length) {
       return;
@@ -143,7 +217,10 @@ async function loadProfessionals() {
   }
 
   try {
-    const data = await api("/professionals");
+    const data = await measurePerformance(
+      "homepage professionals",
+      () => api("/professionals")
+    );
 
     if (!data.professionals || !data.professionals.length) {
       return;
@@ -252,6 +329,7 @@ async function setupSearchPage() {
     new URLSearchParams(window.location.search);
 
   const initialQuery = params.get("q") || "";
+  const initialCategory = params.get("category") || "";
   const searchInput =
     document.querySelector("#searchInput");
 
@@ -259,9 +337,22 @@ async function setupSearchPage() {
     searchInput.value = initialQuery;
   }
 
-  await loadSearchCategories();
   setupSearchFilters();
-  await performProfessionalSearch();
+
+  const categoriesTask = loadSearchCategories();
+
+  if (initialCategory) {
+    // Wait for the options so invalid URL categories remain omitted from the
+    // initial API request, matching the previous behavior.
+    await categoriesTask;
+    await performProfessionalSearch();
+    return;
+  }
+
+  await Promise.all([
+    categoriesTask,
+    performProfessionalSearch()
+  ]);
 }
 
 
@@ -276,7 +367,7 @@ async function loadSearchCategories() {
   if (!select) return;
 
   try {
-    const data = await api("/categories");
+    const data = await measurePerformance("search categories", getCategories);
 
     if (!data.categories || !data.categories.length) {
       return;
@@ -365,6 +456,8 @@ function setupSearchFilters() {
 ========================= */
 
 async function performProfessionalSearch() {
+  const requestGeneration = ++searchRequestGeneration;
+
   const container =
     document.querySelector("#professionalsList");
 
@@ -411,8 +504,14 @@ async function performProfessionalSearch() {
     if (categoryValue) queryParams.set("category", categoryValue);
     if (areaValue) queryParams.set("area", areaValue);
 
-    const data =
-      await api(`/professionals?${queryParams.toString()}`);
+    const data = await measurePerformance(
+      "professional search",
+      () => api(`/professionals?${queryParams.toString()}`)
+    );
+
+    if (requestGeneration !== searchRequestGeneration) {
+      return;
+    }
 
     let professionals = data.professionals || [];
 
@@ -447,6 +546,10 @@ async function performProfessionalSearch() {
 
   } catch (error) {
     console.error("Professional search failed:", error);
+
+    if (requestGeneration !== searchRequestGeneration) {
+      return;
+    }
 
     if (loading) {
       loading.style.display = "none";
@@ -665,12 +768,14 @@ async function checkLoggedInUser() {
   if (!token) return null;
 
   try {
-    const data =
-      await api("/auth/me", {
+    const data = await measurePerformance(
+      "auth session",
+      () => api("/auth/me", {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      });
+      })
+    );
 
     if (data.user) {
       localStorage.setItem(
@@ -810,16 +915,28 @@ function setupMobileMenu() {
 
 document.addEventListener(
   "DOMContentLoaded",
-  async () => {
+  () => {
+    const pageStartedAt = performance.now();
+
     setupSearch();
     setupToastButtons();
     setupMobileMenu();
 
-    await loadCategories();
-    await loadProfessionals();
-    await setupSearchPage();
-
-    // Update navigation after checking the logged-in customer.
-    await updateNavigation();
+    void Promise.all([
+      loadCategories(),
+      loadProfessionals(),
+      setupSearchPage(),
+      updateNavigation()
+    ])
+      .then(() => {
+        console.debug(
+          `[Fixzeers perf] page initialization: ${Math.round(
+            performance.now() - pageStartedAt
+          )}ms`
+        );
+      })
+      .catch(error => {
+        console.error("Page initialization failed:", error);
+      });
   }
 );
