@@ -2,6 +2,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+const nodeEnv = process.env.NODE_ENV || "development";
+
 const jwtSecret = process.env.JWT_SECRET;
 
 if (!jwtSecret || jwtSecret.length < 32) {
@@ -12,7 +14,7 @@ if (!jwtSecret || jwtSecret.length < 32) {
 
 const otpHashSecret =
   process.env.OTP_HASH_SECRET ||
-  (process.env.NODE_ENV === "production" ? undefined : jwtSecret);
+  (nodeEnv === "production" ? undefined : jwtSecret);
 
 if (!otpHashSecret || otpHashSecret.length < 32) {
   throw new Error(
@@ -48,7 +50,7 @@ if (corsOrigins.includes("*")) {
 }
 
 if (
-  process.env.NODE_ENV === "production" &&
+  nodeEnv === "production" &&
   !corsOrigins.includes("https://fixzeers.vercel.app")
 ) {
   throw new Error(
@@ -57,24 +59,56 @@ if (
 }
 
 const allowDevelopmentOtpLogs =
-  process.env.NODE_ENV === "development" &&
+  nodeEnv === "development" &&
   process.env.ENABLE_DEV_OTP_LOGS === "true";
 
 const otpProvider =
   process.env.OTP_PROVIDER ||
-  (process.env.NODE_ENV === "production" ? "twilio" : "console");
+  (nodeEnv === "production" ? "twilio" : "console");
 
-if (otpProvider !== "console" && otpProvider !== "twilio") {
+if (otpProvider !== "console" && otpProvider !== "twilio" && otpProvider !== "qa") {
   throw new Error(
-    "OTP_PROVIDER must be either console or twilio."
+    "OTP_PROVIDER must be either console, twilio, or qa."
   );
 }
 
-if (process.env.NODE_ENV === "production" && otpProvider !== "twilio") {
-  throw new Error(
-    "Production OTP_PROVIDER must be twilio."
-  );
+const qaOtpEnabled = process.env.QA_OTP_ENABLED === "true";
+const qaOtpPhoneNumbers = (process.env.QA_OTP_PHONE_NUMBERS || "")
+  .split(",")
+  .map(phone => phone.trim())
+  .filter(Boolean);
+
+export function validateQaOtpConfiguration(
+  environment: string,
+  provider: string,
+  enabled: boolean,
+  phoneNumbers: string[]
+) {
+  if (environment === "production" && enabled) {
+    throw new Error("QA OTP cannot be enabled in production.");
+  }
+
+  if (environment === "production" && provider !== "twilio") {
+    throw new Error("Production OTP_PROVIDER must be twilio.");
+  }
+
+  if (provider === "qa" && !enabled) {
+    throw new Error("QA OTP requires QA_OTP_ENABLED=true.");
+  }
+
+  if (provider === "qa" && phoneNumbers.length === 0) {
+    throw new Error(
+      "QA_OTP_PHONE_NUMBERS must contain at least one phone number when OTP_PROVIDER=qa."
+    );
+  }
 }
+
+validateQaOtpConfiguration(
+  nodeEnv,
+  otpProvider,
+  qaOtpEnabled,
+  qaOtpPhoneNumbers
+);
 
 const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
 const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
@@ -89,6 +123,7 @@ if (otpProvider === "twilio" &&
 
 export const config = {
   port: Number(process.env.PORT || 4000),
+  nodeEnv,
   databaseUrl,
   jwtSecret,
   otpHashSecret,
@@ -96,6 +131,8 @@ export const config = {
   corsOrigins,
   allowDevelopmentOtpLogs,
   otpProvider,
+  qaOtpEnabled,
+  qaOtpPhoneNumbers,
   twilioAccountSid,
   twilioAuthToken,
   twilioFromNumber

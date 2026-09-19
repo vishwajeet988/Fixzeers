@@ -17,6 +17,10 @@ Node.js, Express, TypeScript, PostgreSQL, JWT, bcrypt, Zod.
    Production must set `CORS_ORIGIN=https://fixzeers.vercel.app`,
    `OTP_PROVIDER=twilio`, `OTP_HASH_SECRET`, and the Twilio account,
    auth-token, and sender number variables. Never commit those secrets.
+   For non-production QA, set `OTP_PROVIDER=qa`,
+   `QA_OTP_ENABLED=true`, and `QA_OTP_PHONE_NUMBERS` to a comma-separated
+   allowlist of test numbers. QA OTPs are only logged for those numbers and
+   are rejected in production.
 5. Run `npm install`.
 6. Run `npm run build`.
 7. Run `npm run dev`.

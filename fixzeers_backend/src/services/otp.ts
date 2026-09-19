@@ -3,10 +3,15 @@ import { config } from "../config";
 export type OtpPurpose = "phone verification" | "password reset";
 
 export interface OtpDeliveryProvider {
+  canSend(phone: string): boolean;
   send(phone: string, otp: string, purpose: OtpPurpose): Promise<void>;
 }
 
 class ConsoleOtpDeliveryProvider implements OtpDeliveryProvider {
+  canSend(_phone: string) {
+    return true;
+  }
+
   async send(phone: string, otp: string, purpose: OtpPurpose) {
     if (config.allowDevelopmentOtpLogs) {
       console.log(`[DEV OTP] ${purpose} for ${phone}: ${otp}`);
@@ -23,6 +28,10 @@ class TwilioOtpDeliveryProvider implements OtpDeliveryProvider {
     private readonly fromNumber: string,
     private readonly fetchImplementation: FetchImplementation = fetch
   ) {}
+
+  canSend(_phone: string) {
+    return true;
+  }
 
   async send(phone: string, otp: string, purpose: OtpPurpose) {
     const body = new URLSearchParams({
@@ -49,14 +58,56 @@ class TwilioOtpDeliveryProvider implements OtpDeliveryProvider {
   }
 }
 
+class QaOtpDeliveryProvider implements OtpDeliveryProvider {
+  constructor(
+    private readonly phoneNumbers: readonly string[],
+    private readonly logger: (message: string) => void,
+    private readonly environment: string
+  ) {}
+
+  canSend(phone: string) {
+    return this.phoneNumbers.includes(phone);
+  }
+
+  async send(phone: string, otp: string, purpose: OtpPurpose) {
+    if (this.environment === "production") {
+      throw new Error("QA OTP cannot be used in production.");
+    }
+
+    if (!this.canSend(phone)) {
+      throw new Error("QA OTP is only available for configured test phone numbers.");
+    }
+
+    this.logger(`[QA OTP] ${purpose} for ${phone}: ${otp}`);
+  }
+}
+
 export function createOtpDeliveryProvider(): OtpDeliveryProvider {
-  return config.otpProvider === "twilio"
-    ? new TwilioOtpDeliveryProvider(
+  if (config.otpProvider === "twilio") {
+    return new TwilioOtpDeliveryProvider(
         config.twilioAccountSid!,
         config.twilioAuthToken!,
         config.twilioFromNumber!
-      )
-    : new ConsoleOtpDeliveryProvider();
+      );
+  }
+
+  if (config.otpProvider === "qa") {
+    return new QaOtpDeliveryProvider(
+      config.qaOtpPhoneNumbers,
+      console.log,
+      config.nodeEnv
+    );
+  }
+
+  return new ConsoleOtpDeliveryProvider();
+}
+
+export function createQaOtpDeliveryProvider(
+  phoneNumbers: readonly string[],
+  logger: (message: string) => void,
+  environment = "development"
+): OtpDeliveryProvider {
+  return new QaOtpDeliveryProvider(phoneNumbers, logger, environment);
 }
 
 export function createTwilioOtpDeliveryProvider(

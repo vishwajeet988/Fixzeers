@@ -5,7 +5,7 @@
   "description": "Fixzeers MVP backend API",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "test": "tsx --test tests/integration.test.ts",
+    "test": "tsx --test tests/integration.test.ts && tsx --test tests/qa-auth.test.ts",
     "build": "tsc",
     "start": "node dist/server.js"
   },

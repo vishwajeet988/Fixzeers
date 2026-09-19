@@ -253,6 +253,13 @@ router.post(
         });
       }
 
+      if (!otpDeliveryProvider.canSend(user.phone)) {
+        return res.json({
+          message:
+            "If the phone number is registered, an OTP has been generated."
+        });
+      }
+
       // Invalidate previous unused OTPs.
       await query(
         `UPDATE phone_otp_challenges
@@ -546,6 +553,13 @@ router.post(
        * being used as a recovery channel.
        */
       if (!user.phone_verified) {
+        return res.json({
+          message:
+            "If the account exists, a password reset OTP has been generated."
+        });
+      }
+
+      if (!otpDeliveryProvider.canSend(user.phone)) {
         return res.json({
           message:
             "If the account exists, a password reset OTP has been generated."

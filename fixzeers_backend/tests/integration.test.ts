@@ -53,6 +53,46 @@ test("Twilio OTP provider sends an SMS without exposing credentials", async () =
   assert.match(String(requestInit?.body), /123456/);
 });
 
+test("QA OTP provider enforces its allowlist and rejects production", async () => {
+  process.env.NODE_ENV = "development";
+  const { createQaOtpDeliveryProvider } = await import("../src/services/otp");
+  const { validateQaOtpConfiguration } = await import("../src/config");
+  const messages: string[] = [];
+  const provider = createQaOtpDeliveryProvider(
+    ["+15551111111"],
+    message => messages.push(message)
+  );
+
+  assert.equal(provider.canSend("+15551111111"), true);
+  assert.equal(provider.canSend("+15552222222"), false);
+  await provider.send("+15551111111", "123456", "phone verification");
+  assert.match(messages[0], /123456/);
+  await assert.rejects(
+    provider.send("+15552222222", "123456", "phone verification"),
+    /configured test phone numbers/
+  );
+  await assert.rejects(
+    createQaOtpDeliveryProvider(["+15551111111"], () => {}, "production").send(
+      "+15551111111",
+      "123456",
+      "phone verification"
+    ),
+    /cannot be used in production/
+  );
+  assert.throws(
+    () => validateQaOtpConfiguration("production", "qa", true, ["+15551111111"]),
+    /cannot be enabled in production/
+  );
+  assert.throws(
+    () => validateQaOtpConfiguration("development", "qa", false, ["+15551111111"]),
+    /QA_OTP_ENABLED=true/
+  );
+  assert.throws(
+    () => validateQaOtpConfiguration("development", "qa", true, []),
+    /QA_OTP_PHONE_NUMBERS/
+  );
+});
+
 async function loadApp() {
   process.env.DATABASE_URL = testDatabaseUrl || configuredDatabaseUrl;
   process.env.JWT_SECRET = "test-only-secret-with-at-least-32-characters";
