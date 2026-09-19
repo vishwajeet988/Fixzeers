@@ -263,6 +263,55 @@ test(
       assert.equal(categories.status, 200);
       assert.ok(categories.body.categories.length >= 2);
 
+      const timingLines: string[] = [];
+      const originalInfo = console.info;
+      console.info = (...args: unknown[]) => {
+        timingLines.push(args.join(" "));
+      };
+
+      let professionals: ApiResponse;
+      try {
+        professionals = await request("GET", "/api/professionals");
+      } finally {
+        console.info = originalInfo;
+      }
+
+      assert.equal(professionals.status, 200);
+      assert.ok(Array.isArray(professionals.body.professionals));
+      assert.ok(
+        professionals.body.professionals.some(
+          (row: { id: string }) => row.id === professional.user.id
+        )
+      );
+
+      const timingOutput = timingLines.join("\n");
+      assert.match(timingOutput, /"event":"request_start".*"route":"professionals\.list"/);
+      assert.match(timingOutput, /"event":"database_query".*"query":"professionals\.list"/);
+      assert.match(timingOutput, /"pool_wait_ms":/);
+      assert.match(timingOutput, /"sql_ms":/);
+      assert.match(timingOutput, /"event":"route_complete".*"route":"professionals\.list"/);
+      assert.match(timingOutput, /"event":"response_complete".*"route":"professionals\.list"/);
+      assert.doesNotMatch(
+        timingOutput,
+        /DATABASE_URL|authorization|password|jwt|otp|phone|email|token/i
+      );
+
+      const throwingInfo = console.info;
+      console.info = () => {
+        throw new Error("timing logger failure");
+      };
+
+      try {
+        const resilientProfessionals = await request(
+          "GET",
+          "/api/professionals"
+        );
+        assert.equal(resilientProfessionals.status, 200);
+        assert.ok(Array.isArray(resilientProfessionals.body.professionals));
+      } finally {
+        console.info = throwingInfo;
+      }
+
       assert.equal((await request("GET", "/api/professionals/not-a-uuid")).status, 400);
       assert.equal((await request("GET", "/api/professionals/00000000-0000-0000-0000-000000000000")).status, 404);
 

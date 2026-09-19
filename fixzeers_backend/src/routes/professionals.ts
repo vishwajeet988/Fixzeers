@@ -4,10 +4,16 @@ import { query } from "../db";
 import { requireAuth, requireRole } from "../middleware/auth";
 import { AuthRequest } from "../types";
 import { recalculateReputation } from "../utils/reputation";
+import {
+  completeRouteTiming,
+  startRouteTiming
+} from "../observability";
 
 const router = Router();
 
 router.get("/", async (req, res, next) => {
+  const routeStartedAt = startRouteTiming();
+
   try {
     const q = String(req.query.q || "").trim();
     const category = String(req.query.category || "").trim();
@@ -61,7 +67,8 @@ router.get("/", async (req, res, next) => {
          COALESCE(r.score, 0) DESC,
          COALESCE(r.average_rating, 0) DESC
        LIMIT 50`,
-      [q, category, area]
+      [q, category, area],
+      "professionals.list"
     );
 
     res.json({
@@ -69,6 +76,8 @@ router.get("/", async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  } finally {
+    completeRouteTiming("professionals.list", routeStartedAt);
   }
 });
 

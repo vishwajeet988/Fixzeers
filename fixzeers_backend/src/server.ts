@@ -2,7 +2,12 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { config } from "./config";
-import { pool } from "./db";
+import { query } from "./db";
+import {
+  completeRouteTiming,
+  requestTimingMiddleware,
+  startRouteTiming
+} from "./observability";
 import authRoutes from "./routes/auth";
 import categoryRoutes from "./routes/categories";
 import professionalRoutes from "./routes/professionals";
@@ -27,10 +32,13 @@ app.use(
 );
 
 app.use(express.json({ limit: "1mb" }));
+app.use(requestTimingMiddleware);
 
 app.get("/api/health", async (_req, res) => {
+  const routeStartedAt = startRouteTiming();
+
   try {
-    await pool.query("SELECT 1");
+    await query("SELECT 1", [], "health.select_1");
 
     res.json({
       status: "ok",
@@ -43,6 +51,8 @@ app.get("/api/health", async (_req, res) => {
       service: "fixzeers-backend",
       database: "disconnected"
     });
+  } finally {
+    completeRouteTiming("health", routeStartedAt);
   }
 });
 
