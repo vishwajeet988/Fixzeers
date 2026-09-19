@@ -9,8 +9,11 @@ Node.js, Express, TypeScript, PostgreSQL, JWT, bcrypt, Zod.
 
 1. Install Node.js 20+ and PostgreSQL.
 2. Create a PostgreSQL database named `fixzeers`.
-3. Run `database/schema.sql`.
-4. Copy `.env.example` to `.env` and update credentials.
+3. Apply the database files in order:
+   `database/schema.sql`, then migrations
+   `001_indexes_and_constraints.sql` through `006_professional_skills.sql`.
+4. Copy `.env.example` to `.env` and update credentials. Keep
+   `ENABLE_DEV_OTP_LOGS=false`; OTPs must never be logged in production.
 5. Run `npm install`.
 6. Run `npm run build`.
 7. Run `npm run dev`.

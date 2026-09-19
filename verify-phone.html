@@ -434,6 +434,40 @@
 
         }
 
+        const pendingProfileJson = sessionStorage.getItem(
+          "fixzeers_pending_professional_profile"
+        );
+        const isProfessional = user?.role === "professional";
+
+        if (isProfessional && pendingProfileJson) {
+          const profileResponse = await fetch(
+            `${API}/professionals/profile/me`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+              },
+              body: pendingProfileJson
+            }
+          );
+          const profileData = await profileResponse
+            .json()
+            .catch(() => ({}));
+
+          if (!profileResponse.ok) {
+            throw new Error(
+              profileData.error ||
+              profileData.message ||
+              "Phone verified, but professional profile setup failed."
+            );
+          }
+
+          sessionStorage.removeItem(
+            "fixzeers_pending_professional_profile"
+          );
+        }
+
 
         // Remove temporary phone
         sessionStorage.removeItem(
@@ -442,15 +476,18 @@
 
 
         showMessage(
-          "Phone verified successfully. Welcome to Fixzeers!",
+          isProfessional
+            ? "Phone verified and professional profile completed."
+            : "Phone verified successfully. Welcome to Fixzeers!",
           "success"
         );
 
 
         setTimeout(() => {
 
-          window.location.href =
-            "search.html";
+          window.location.href = isProfessional
+            ? "worker-dashboard.html"
+            : "search.html";
 
         }, 800);
 

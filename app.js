@@ -687,7 +687,7 @@ async function checkLoggedInUser() {
   }
 }
 async function updateNavigation() {
-  const navActions = document.getElementById("navActions");
+  const navActions = document.querySelector(".nav-actions");
 
   if (!navActions) return;
 
@@ -702,7 +702,7 @@ async function updateNavigation() {
   }
 
   navActions.innerHTML = `
-    <a class="btn btn-light" href="profile.html">
+    <a class="btn btn-light" href="${user.role === "professional" ? "worker-dashboard.html" : "profile.html"}">
       👤 ${escapeHtml(user.name || "Profile")}
     </a>
     <button class="btn btn-primary" id="logoutBtn" type="button">

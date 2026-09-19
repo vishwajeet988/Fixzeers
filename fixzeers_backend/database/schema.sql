@@ -3,6 +3,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(120) NOT NULL,
+  city VARCHAR(100),
   email VARCHAR(255) UNIQUE,
   phone VARCHAR(20) UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
@@ -27,6 +28,7 @@ CREATE TABLE IF NOT EXISTS professional_profiles (
   availability VARCHAR(80),
   verification_status VARCHAR(30) NOT NULL DEFAULT 'new'
     CHECK (verification_status IN ('new','verified','trusted','top')),
+  skills TEXT[] NOT NULL DEFAULT '{}',
   portfolio_urls TEXT[] NOT NULL DEFAULT '{}',
   references_text TEXT[] NOT NULL DEFAULT '{}',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),

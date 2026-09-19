@@ -26,9 +26,14 @@ if (!corsOrigin) {
   );
 }
 
+const allowDevelopmentOtpLogs =
+  process.env.NODE_ENV === "development" &&
+  process.env.ENABLE_DEV_OTP_LOGS === "true";
+
 export const config = {
   port: Number(process.env.PORT || 4000),
   databaseUrl,
   jwtSecret,
-  corsOrigin
+  corsOrigin,
+  allowDevelopmentOtpLogs
 };

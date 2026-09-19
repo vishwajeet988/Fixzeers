@@ -9,7 +9,7 @@ import professionalRoutes from "./routes/professionals";
 import jobRoutes from "./routes/jobs";
 import reviewRoutes from "./routes/reviews";
 
-const app = express();
+export const app = express();
 
 app.disable("x-powered-by");
 
@@ -65,6 +65,12 @@ app.use(
     res: express.Response,
     _next: express.NextFunction
   ) => {
+    if (err?.type === "entity.parse.failed") {
+      return res.status(400).json({
+        error: "Malformed JSON request body"
+      });
+    }
+
     console.error(err);
 
     res.status(500).json({
@@ -73,8 +79,10 @@ app.use(
   }
 );
 
-app.listen(config.port, () => {
-  console.log(
-    `Fixzeers API running on http://localhost:${config.port}`
-  );
-});
+if (require.main === module) {
+  app.listen(config.port, () => {
+    console.log(
+      `Fixzeers API running on http://localhost:${config.port}`
+    );
+  });
+}

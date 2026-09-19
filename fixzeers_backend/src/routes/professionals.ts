@@ -159,6 +159,21 @@ router.put(
         });
       }
 
+      if (data.categoryId !== undefined) {
+        const category = await query(
+          `SELECT id
+           FROM categories
+           WHERE id = $1`,
+          [data.categoryId]
+        );
+
+        if (!category.rows[0]) {
+          return res.status(400).json({
+            error: "Invalid service category"
+          });
+        }
+      }
+
       const result = await query(
         `UPDATE professional_profiles
          SET

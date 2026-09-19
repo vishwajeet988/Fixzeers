@@ -1,0 +1,6 @@
+BEGIN;
+
+ALTER TABLE professional_profiles
+ADD COLUMN IF NOT EXISTS skills TEXT[] NOT NULL DEFAULT '{}';
+
+COMMIT;

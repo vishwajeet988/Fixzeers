@@ -41,6 +41,37 @@ const transitions: Record<string, string[]> = {
   disputed: []
 };
 
+const transitionRoles: Record<
+  string,
+  Record<string, Array<"customer" | "professional" | "admin">>
+> = {
+  requested: {
+    accepted: ["professional"],
+    cancelled: ["customer", "professional", "admin"]
+  },
+  accepted: {
+    scheduled: ["professional"],
+    arrived: ["professional"],
+    cancelled: ["customer", "professional", "admin"]
+  },
+  scheduled: {
+    arrived: ["professional"],
+    cancelled: ["customer", "professional", "admin"]
+  },
+  arrived: {
+    in_progress: ["professional"],
+    disputed: ["customer", "professional", "admin"]
+  },
+  in_progress: {
+    completed: ["professional"],
+    disputed: ["customer", "professional", "admin"]
+  },
+  completed: {
+    customer_confirmed: ["customer"],
+    disputed: ["customer", "professional", "admin"]
+  }
+};
+
 router.post(
   "/",
   requireAuth,
@@ -296,39 +327,21 @@ router.patch(
         });
       }
 
-      if (status === "accepted" && !isProfessional) {
-        return res.status(403).json({
-          error: "Only the professional can accept"
-        });
-      }
+      const allowedRoles =
+        transitionRoles[job.status]?.[status] || [];
 
-      if (status === "customer_confirmed" && !isCustomer) {
+      if (!allowedRoles.includes(req.user!.role)) {
         return res.status(403).json({
-          error: "Only the customer can confirm"
-        });
-      }
-
-      if (
-        status === "cancelled" &&
-        !isCustomer &&
-        !isProfessional &&
-        !isAdmin
-      ) {
-        return res.status(403).json({
-          error:
-            "Only the customer, professional, or admin can cancel"
+          error: "You are not allowed to perform this job transition"
         });
       }
 
       if (
-        status === "disputed" &&
-        !isCustomer &&
-        !isProfessional &&
-        !isAdmin
+        (req.user!.role === "customer" && !isCustomer) ||
+        (req.user!.role === "professional" && !isProfessional)
       ) {
         return res.status(403).json({
-          error:
-            "Only the customer, professional, or admin can dispute"
+          error: "Not authorized for this job"
         });
       }
 

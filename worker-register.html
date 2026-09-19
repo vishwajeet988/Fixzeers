@@ -837,19 +837,10 @@
         }
 
 
-        /*
-         * Make sure token exists.
-         */
-
-        if (
-          !registerData.token ||
-          !registerData.user
-        ) {
-
+        if (!registerData.user) {
           throw new Error(
-            "Registration succeeded but authentication data was not returned."
+            "Registration succeeded but account data was not returned."
           );
-
         }
 
 
@@ -867,33 +858,6 @@
           );
 
         }
-
-
-        /*
-         * Save authentication.
-         */
-
-        localStorage.setItem(
-          "fixzeers_token",
-          registerData.token
-        );
-
-
-        localStorage.setItem(
-          "fixzeers_user",
-          JSON.stringify(
-            registerData.user
-          )
-        );
-
-
-        /*
-         * STEP 2
-         * Update professional profile
-         */
-
-        button.textContent =
-          "Setting up profile...";
 
 
         const profileBody = {
@@ -924,161 +888,53 @@
         };
 
 
-        const profileResponse =
-          await fetch(
-            `${API}/professionals/profile/me`,
-            {
-
-              method: "PUT",
-
-              headers: {
-
-                "Content-Type":
-                  "application/json",
-
-                "Authorization":
-                  `Bearer ${registerData.token}`
-
-              },
-
-              body:
-                JSON.stringify(
-                  profileBody
-                )
-
-            }
-          );
-
-
-        const profileData =
-          await profileResponse
-            .json()
-            .catch(() => ({}));
-
-
-        /*
- * Handle profile errors
- *
- * IMPORTANT:
- * The professional account was already created
- * successfully in STEP 1.
- *
- * Do NOT attempt registration again.
- */
-
-if (!profileResponse.ok) {
-
-  const details =
-    profileData.details;
-
-  let message =
-    profileData.error ||
-    profileData.message ||
-    "Professional profile setup failed.";
-
-  if (
-    Array.isArray(details) &&
-    details.length > 0 &&
-    details[0].message
-  ) {
-
-    message =
-      details[0].message;
-
-  }
-
-  /*
-   * Keep the authentication information so the
-   * user can continue with the newly created account.
-   */
-
-  localStorage.setItem(
-    "fixzeers_registration_pending",
-    JSON.stringify({
-
-      token:
-        registerData.token,
-
-      user:
-        registerData.user,
-
-      profile:
-        profileBody
-
-    })
-  );
-
-  /*
-   * Make it clear that the account itself exists.
-   */
-
-  throw new Error(
-  "Your account was created, but your professional profile could not be completed. " +
-  message +
-  " Please contact support or try completing your profile after signing in."
-);
-
-}
-
-
-        /*
-         * STEP 3
-         * Registration complete
-         */
-
-        localStorage.setItem(
-          "fixzeers_user",
-          JSON.stringify({
-
-            ...registerData.user,
-
-            role:
-              "professional"
-
-          })
+        const otpResponse = await fetch(
+          `${API}/auth/request-otp`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              phone: normalizedPhone
+            })
+          }
         );
 
+        const otpData = await otpResponse
+          .json()
+          .catch(() => ({}));
+
+        if (!otpResponse.ok) {
+          throw new Error(
+            otpData.error ||
+            otpData.message ||
+            "Account created, but we could not send the verification code."
+          );
+        }
+
+        sessionStorage.setItem(
+          "fixzeers_pending_phone",
+          normalizedPhone
+        );
+        sessionStorage.setItem(
+          "fixzeers_pending_professional_profile",
+          JSON.stringify(profileBody)
+        );
 
         toast(
-          "Professional account created successfully!"
+          "Account created. Verify your phone to finish your professional profile."
         );
 
-
-        /*
-         * Redirect to professional dashboard
-         */
-
-        setTimeout(
-          function () {
-
-            window.location.href =
-              "worker-dashboard.html";
-
-          },
-          1000
-        );
-
+        setTimeout(() => {
+          window.location.href = "verify-phone.html";
+        }, 800);
 
       } catch (error) {
 
         console.error(
           "Professional registration error:",
           error
-        );
-
-
-        /*
-         * Clear authentication if
-         * registration/profile setup failed.
-         */
-
-        localStorage.removeItem(
-          "fixzeers_token"
-        );
-
-
-        localStorage.removeItem(
-          "fixzeers_user"
         );
 
 

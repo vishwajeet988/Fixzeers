@@ -286,9 +286,9 @@ router.post(
         [user.id, otpHash]
       );
 
-      console.log(
-        `[DEV OTP] Phone ${user.phone}: ${otp}`
-      );
+      if (config.allowDevelopmentOtpLogs) {
+        console.log(`[DEV OTP] Phone ${user.phone}: ${otp}`);
+      }
 
       return res.json({
         message:
@@ -340,31 +340,41 @@ router.post(
         });
       }
 
-      if (user.phone_verified) {
-        return res.json({
-          message: "Phone number is already verified.",
-          user
-        });
-      }
-
       const otpResult = await query<any>(
         `SELECT
            id,
            otp_hash,
            expires_at,
            attempts,
-           max_attempts
-         FROM phone_otp_challenges
-         WHERE user_id = $1
-           AND consumed_at IS NULL
-         ORDER BY created_at DESC
-         LIMIT 1`,
+           max_attempts,
+           consumed_at
+          FROM phone_otp_challenges
+          WHERE user_id = $1
+          ORDER BY created_at DESC
+          LIMIT 1`,
         [user.id]
       );
 
       const challenge = otpResult.rows[0];
+      const suppliedHash = hashOtp(data.otp);
 
-      if (!challenge) {
+      if (user.phone_verified) {
+        if (
+          challenge?.consumed_at &&
+          safeOtpCompare(suppliedHash, challenge.otp_hash)
+        ) {
+          return res.status(400).json({
+            error: "Invalid or expired OTP"
+          });
+        }
+
+        return res.json({
+          message: "Phone number is already verified.",
+          user
+        });
+      }
+
+      if (!challenge || challenge.consumed_at) {
         return res.status(400).json({
           error: "Invalid or expired OTP"
         });
@@ -403,8 +413,6 @@ router.post(
         });
       }
 
-      const suppliedHash = hashOtp(data.otp);
-
       if (
         !safeOtpCompare(
           suppliedHash,
@@ -438,12 +446,23 @@ router.post(
         });
       }
 
-      await query(
+      const consumedOtp = await query(
         `UPDATE phone_otp_challenges
          SET consumed_at = NOW()
-         WHERE id = $1`,
-        [challenge.id]
+         WHERE id = $1
+           AND consumed_at IS NULL
+           AND expires_at > NOW()
+           AND attempts < max_attempts
+           AND otp_hash = $2
+         RETURNING id`,
+        [challenge.id, suppliedHash]
       );
+
+      if (!consumedOtp.rows[0]) {
+        return res.status(400).json({
+          error: "Invalid or expired OTP"
+        });
+      }
 
       const updatedUser = await query<any>(
         `UPDATE users
@@ -567,9 +586,11 @@ router.post(
         [user.id, otpHash]
       );
 
-      console.log(
-        `[DEV PASSWORD RESET OTP] User ${user.id}: ${otp}`
-      );
+      if (config.allowDevelopmentOtpLogs) {
+        console.log(
+          `[DEV PASSWORD RESET OTP] User ${user.id}: ${otp}`
+        );
+      }
 
       return res.json({
         message:
@@ -721,6 +742,27 @@ router.post(
         });
       }
 
+      /*
+       * Consume the OTP so it cannot be reused.
+       */
+      const consumedReset = await query(
+        `UPDATE password_reset_challenges
+         SET consumed_at = NOW()
+         WHERE id = $1
+           AND consumed_at IS NULL
+           AND expires_at > NOW()
+           AND attempts < max_attempts
+           AND otp_hash = $2
+         RETURNING id`,
+        [challenge.id, suppliedHash]
+      );
+
+      if (!consumedReset.rows[0]) {
+        return res.status(400).json({
+          error: "Invalid or expired OTP"
+        });
+      }
+
       const passwordHash =
         await bcrypt.hash(
           data.newPassword,
@@ -732,16 +774,6 @@ router.post(
          SET password_hash = $1
          WHERE id = $2`,
         [passwordHash, user.id]
-      );
-
-      /*
-       * Consume the OTP so it cannot be reused.
-       */
-      await query(
-        `UPDATE password_reset_challenges
-         SET consumed_at = NOW()
-         WHERE id = $1`,
-        [challenge.id]
       );
 
       /*
