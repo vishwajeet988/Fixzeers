@@ -8,6 +8,7 @@ import { query } from "../db";
 import { config } from "../config";
 import { requireAuth } from "../middleware/auth";
 import { AuthRequest } from "../types";
+import { otpDeliveryProvider } from "../services/otp";
 
 const router = Router();
 
@@ -108,7 +109,7 @@ function generateOtp(): string {
 
 function hashOtp(otp: string): string {
   return crypto
-    .createHash("sha256")
+    .createHmac("sha256", config.otpHashSecret)
     .update(otp)
     .digest("hex");
 }
@@ -216,11 +217,7 @@ router.post(
 /*
  * REQUEST PHONE OTP
  *
- * Development mode:
- * OTP is printed in the backend terminal.
- *
- * Production:
- * Replace console.log with an SMS provider.
+ * Development uses the configured console provider. Production uses Twilio.
  */
 router.post(
   "/request-otp",
@@ -286,9 +283,7 @@ router.post(
         [user.id, otpHash]
       );
 
-      if (config.allowDevelopmentOtpLogs) {
-        console.log(`[DEV OTP] Phone ${user.phone}: ${otp}`);
-      }
+      await otpDeliveryProvider.send(user.phone, otp, "phone verification");
 
       return res.json({
         message:
@@ -586,11 +581,7 @@ router.post(
         [user.id, otpHash]
       );
 
-      if (config.allowDevelopmentOtpLogs) {
-        console.log(
-          `[DEV PASSWORD RESET OTP] User ${user.id}: ${otp}`
-        );
-      }
+      await otpDeliveryProvider.send(user.phone, otp, "password reset");
 
       return res.json({
         message:

@@ -230,6 +230,12 @@ router.put(
 
 router.get("/:id", async (req, res, next) => {
   try {
+    if (!z.string().uuid().safeParse(req.params.id).success) {
+      return res.status(400).json({
+        error: "Invalid professional ID"
+      });
+    }
+
     const result = await query(
       `SELECT
           u.id,

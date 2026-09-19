@@ -14,6 +14,9 @@ Node.js, Express, TypeScript, PostgreSQL, JWT, bcrypt, Zod.
    `001_indexes_and_constraints.sql` through `006_professional_skills.sql`.
 4. Copy `.env.example` to `.env` and update credentials. Keep
    `ENABLE_DEV_OTP_LOGS=false`; OTPs must never be logged in production.
+   Production must set `CORS_ORIGIN=https://fixzeers.vercel.app`,
+   `OTP_PROVIDER=twilio`, `OTP_HASH_SECRET`, and the Twilio account,
+   auth-token, and sender number variables. Never commit those secrets.
 5. Run `npm install`.
 6. Run `npm run build`.
 7. Run `npm run dev`.

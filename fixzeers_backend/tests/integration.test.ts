@@ -23,6 +23,36 @@ let pool: any;
 let baseUrl = "";
 let httpServer: Server | undefined;
 
+test("Twilio OTP provider sends an SMS without exposing credentials", async () => {
+  process.env.NODE_ENV = "development";
+  process.env.ENABLE_DEV_OTP_LOGS = "true";
+  const { createTwilioOtpDeliveryProvider } = await import("../src/services/otp");
+  let requestUrl = "";
+  let requestInit: RequestInit | undefined;
+  const fakeFetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+    requestUrl = String(input);
+    requestInit = init;
+    return new Response("{}", { status: 201 });
+  };
+
+  const provider = createTwilioOtpDeliveryProvider(
+    "AC123",
+    "auth-secret",
+    "+15550000000",
+    fakeFetch
+  );
+  await provider.send("+15551111111", "123456", "phone verification");
+
+  assert.match(requestUrl, /Accounts\/AC123\/Messages\.json$/);
+  assert.equal(requestInit?.method, "POST");
+  assert.equal(
+    requestInit?.headers && (requestInit.headers as Record<string, string>).Authorization,
+    `Basic ${Buffer.from("AC123:auth-secret").toString("base64")}`
+  );
+  assert.match(String(requestInit?.body), /To=%2B15551111111/);
+  assert.match(String(requestInit?.body), /123456/);
+});
+
 async function loadApp() {
   process.env.DATABASE_URL = testDatabaseUrl || configuredDatabaseUrl;
   process.env.JWT_SECRET = "test-only-secret-with-at-least-32-characters";
@@ -155,6 +185,12 @@ test("malformed JSON returns 400", async () => {
     assert.deepEqual(await response.json(), {
       error: "Malformed JSON request body"
     });
+
+    const corsResponse = await fetch(`${baseUrl}/api/health`, {
+      headers: { Origin: "http://localhost:5500" }
+    });
+    assert.equal(corsResponse.headers.get("access-control-allow-origin"), "http://localhost:5500");
+    assert.equal(corsResponse.headers.get("access-control-allow-credentials"), "true");
   } finally {
     await closeApp();
   }
@@ -186,6 +222,10 @@ test(
       const categories = await request("GET", "/api/categories");
       assert.equal(categories.status, 200);
       assert.ok(categories.body.categories.length >= 2);
+
+      assert.equal((await request("GET", "/api/professionals/not-a-uuid")).status, 400);
+      assert.equal((await request("GET", "/api/professionals/00000000-0000-0000-0000-000000000000")).status, 404);
+
       const [category, wrongCategory] = categories.body.categories;
 
       const profile = await request(
